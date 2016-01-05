@@ -11,9 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160105053040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "covers", force: :cascade do |t|
+    t.text     "photographer"
+    t.text     "license"
+    t.integer  "project_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "covers", ["project_id"], name: "index_covers_on_project_id", using: :btree
+
+  create_table "projects", force: :cascade do |t|
+    t.text     "title"
+    t.text     "subtitle"
+    t.text     "author"
+    t.text     "keywords"
+    t.text     "description"
+    t.text     "isbn10"
+    t.text     "isbn13"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_foreign_key "covers", "projects"
 end
