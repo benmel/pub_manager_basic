@@ -1,0 +1,30 @@
+= form_for @project do |f|
+	- if @project.errors.any?
+		.error_explanation
+			%h2= "#{pluralize(@project.errors.count, 'error')} prohibited this article from being saved:"
+			%ul
+				- @project.errors.full_messages.each do |msg|
+					%li= msg
+	%p
+		= f.label :title
+		= f.text_field :title
+	%p
+		= f.label :subtitle
+		= f.text_field :subtitle
+	%p
+		= f.label :author
+		= f.text_field :author
+	%p
+		= f.label :keywords
+		= f.text_field :keywords
+	%p
+		= f.label :description
+		= f.text_area :description
+	%p
+		= f.label :isbn10
+		= f.text_field :isbn10
+	%p
+		= f.label :isbn13
+		= f.text_field :isbn13
+	%p
+		= f.submit

@@ -1,0 +1,22 @@
+%p
+	%b= label(:project, :title)
+	= @project.title
+%p
+	%b= label(:project, :subtitle)
+	= @project.subtitle
+%p
+	%b= label(:project, :author)
+	= @project.author
+%p
+	%b= label(:project, :keywords)
+	= @project.keywords
+%p
+	%b= label(:project, :description)
+	= @project.description
+%p
+	%b= label(:project, :isbn10)
+	= @project.isbn10
+%p
+	%b= label(:project, :isbn13)
+	= @project.isbn13
+= link_to 'Edit', edit_project_path(@project)
