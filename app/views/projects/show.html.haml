@@ -19,4 +19,10 @@
 %p
 	%b= label(:project, :isbn13)
 	= @project.isbn13
+%p
+	%b= label(:project, :cover)
+	- if @project.cover
+		= link_to('Edit Cover', edit_project_cover_path(@project))
+	- else
+		= link_to('Create Cover', new_project_cover_path(@project))
 = link_to 'Edit', edit_project_path(@project)

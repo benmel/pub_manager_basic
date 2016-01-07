@@ -16,21 +16,21 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
-		@project = Project.create(project_params)
+		@project = Project.new(project_params)
 
 		if @project.save
-			redirect_to projects_path
+			redirect_to @project
 		else
-			render 'new'
+			render :new
 		end
 	end
 
 	def update
 		@project = Project.find(params[:id])
 		if @project.update(project_params)
-			redirect_to projects_path
+			redirect_to @project
 		else
-			render 'edit'
+			render :edit
 		end
 	end
 

@@ -1,0 +1,7 @@
+%p
+	%b= label(:cover, :photographer)
+	= @cover.photographer
+%p
+	%b= label(:cover, :license)
+	= @cover.license
+= link_to 'Edit', edit_project_cover_path(@project)
