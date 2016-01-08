@@ -54,6 +54,10 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
+  devise_for :users
+
+  root 'projects#index'
+
   resources :projects do
     resource :cover
   end

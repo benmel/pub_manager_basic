@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
+	before(:each) do
+		@user ||= create(:user)
+		sign_in @user
+	end
+
 	let(:project) { create(:project) }
 
 	describe 'GET #index' do

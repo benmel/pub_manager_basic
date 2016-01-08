@@ -1,4 +1,6 @@
 class CoversController < ApplicationController
+	before_action :authenticate_user!
+
 	def show
 		@project = find_project
 		@cover = @project.cover

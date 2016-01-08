@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe CoversController, type: :controller do
+	before(:each) do
+		@user ||= create(:user)
+		sign_in @user
+	end
+
 	let(:project_with_cover) { create(:project, cover: create(:cover)) }
 	let(:project_without_cover) { create(:project, cover: nil) }
 
