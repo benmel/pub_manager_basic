@@ -1,4 +1,4 @@
-%table
+%table.table
 	%thead
 		%tr
 			%th Title			
@@ -21,4 +21,4 @@
 				%td= project.isbn13
 				%td= link_to 'View', project_path(project)
 
-= link_to 'New Project', new_project_path			
+= link_to 'New Project', new_project_path, class: 'btn btn-default'	

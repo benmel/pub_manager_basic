@@ -1,28 +1,45 @@
-%p
-	%b= label(:project, :title)
-	= @project.title
-%p
-	%b= label(:project, :subtitle)
-	= @project.subtitle
-%p
-	%b= label(:project, :author)
-	= @project.author
-%p
-	%b= label(:project, :keywords)
-	= @project.keywords
-%p
-	%b= label(:project, :description)
-	= @project.description
-%p
-	%b= label(:project, :isbn10)
-	= @project.isbn10
-%p
-	%b= label(:project, :isbn13)
-	= @project.isbn13
-%p
-	%b= label(:project, :cover)
-	- if @project.cover
-		= link_to('Edit Cover', edit_project_cover_path(@project))
-	- else
-		= link_to('Create Cover', new_project_cover_path(@project))
-= link_to 'Edit', edit_project_path(@project)
+.row
+	.col-md-2
+		%b= label(:project, :title)
+	.col-md-10	
+		= @project.title
+.row
+	.col-md-2
+		%b= label(:project, :subtitle)
+	.col-md-10
+		= @project.subtitle
+.row
+	.col-md-2
+		%b= label(:project, :author)
+	.col-md-10
+		= @project.author
+.row
+	.col-md-2
+		%b= label(:project, :keywords)
+	.col-md-10
+		= @project.keywords
+.row
+	.col-md-2
+		%b= label(:project, :description)
+	.col-md-10
+		= @project.description
+.row
+	.col-md-2
+		%b= label(:project, :isbn10)
+	.col-md-10
+		= @project.isbn10
+.row
+	.col-md-2
+		%b= label(:project, :isbn13)
+	.col-md-10
+		= @project.isbn13
+.row
+	.col-md-2
+		%b= label(:project, :cover)
+	.col-md-10
+		- if @project.cover
+			= link_to('Edit Cover', edit_project_cover_path(@project))
+		- else
+			= link_to('Create Cover', new_project_cover_path(@project))
+= link_to 'Edit', edit_project_path(@project), class: 'btn btn-default'
+= link_to 'Back', projects_path, class: 'btn btn-default'

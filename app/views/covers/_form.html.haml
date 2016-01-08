@@ -5,11 +5,10 @@
 			%ul
 				- @cover.errors.full_messages.each do |msg|
 					%li= msg
-	%p
+	.form-group
 		= f.label :photographer
-		= f.text_field :photographer
-	%p
+		= f.text_field :photographer, class: 'form-control'
+	.form-group
 		= f.label :license
-		= f.text_field :license
-	%p
-		= f.submit
+		= f.text_field :license, class: 'form-control'
+	= f.submit class: 'btn btn-default'

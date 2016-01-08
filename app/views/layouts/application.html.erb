@@ -5,10 +5,37 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+		
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#pub-manager-navbar-collapse" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#">Pub Manager</a>
+			</div>
 
-<%= yield %>
+			<div class="collapse navbar-collapse" id="pub-manager-navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="<%='active' if current_page?(projects_path) %>"><%= link_to 'Projects', projects_path %></li>
+	      </ul>
+			</div>
 
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<%= yield %>
+			</div>
+		</div>
+	</div>	
 </body>
 </html>
