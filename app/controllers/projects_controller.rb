@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def show
-		@project = Project.find(params[:id])
+		@project = find_project
 	end
 
 	def new
@@ -12,12 +12,11 @@ class ProjectsController < ApplicationController
 	end
 
 	def edit
-		@project = Project.find(params[:id])
+		@project = find_project
 	end
 
 	def create
 		@project = Project.new(project_params)
-
 		if @project.save
 			redirect_to @project
 		else
@@ -26,7 +25,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def update
-		@project = Project.find(params[:id])
+		@project = find_project
 		if @project.update(project_params)
 			redirect_to @project
 		else
@@ -35,12 +34,16 @@ class ProjectsController < ApplicationController
 	end
 
 	def destroy
-		@project = Project.find(params[:id])
+		@project = find_project
 		@project.destroy
 		redirect_to projects_path
 	end
 
 	private 
+	def find_project
+		Project.find(params[:id])
+	end
+
 	def project_params
 		params.require(:project).permit(:title, :subtitle, :author, :keywords, :description, :isbn10, :isbn13)
 	end
