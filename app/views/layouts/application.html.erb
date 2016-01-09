@@ -25,6 +25,9 @@
 				
 				<ul class="nav navbar-nav">
 					<li class="<%='active' if current_page?(root_path) || current_page?(projects_path) %>"><%= link_to 'Projects', projects_path %></li>
+					<li><%= link_to 'Kindle', 'https://kdp.amazon.com/reports' %></li>
+					<li><%= link_to 'Createspace', 'https://www.createspace.com/pub/member.dashboard.do' %></li>
+					<li><%= link_to 'ACX', 'https://www.acx.com/sales/dashboard' %></li>		
 	      </ul>
 
 	      <% if user_signed_in? %>
