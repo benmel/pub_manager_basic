@@ -6,7 +6,7 @@ RSpec.describe ProjectsController, type: :controller do
 		sign_in @user
 	end
 
-	let(:project) { create(:project) }
+	let(:project) { create(:project, user: @user) }
 
 	describe 'GET #index' do
 		before(:each) { get :index }
@@ -117,6 +117,15 @@ RSpec.describe ProjectsController, type: :controller do
 
 		it 'redirects to projects_path' do
 			expect(response).to redirect_to(projects_path)
+		end
+	end
+
+	describe 'different user' do
+		it 'raises an error' do
+			sign_in create(:user)
+			expect { 
+				get :show, id: project 
+			}.to raise_error(ActiveRecord::RecordNotFound) 
 		end
 	end
 end

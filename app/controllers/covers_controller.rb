@@ -50,7 +50,7 @@ class CoversController < ApplicationController
 
 	private
 	def find_project
-		Project.find(params[:project_id])
+		current_user.projects.find(params[:project_id])
 	end
 
 	def cover_params

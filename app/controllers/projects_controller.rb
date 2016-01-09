@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
 	before_action :authenticate_user!
 
 	def index
-		@projects = Project.all
+		@projects = current_user.projects
 	end
 
 	def show
@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def create
-		@project = Project.new(project_params)
+		@project = current_user.projects.build(project_params)
 		if @project.save
 			redirect_to @project
 		else
@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
 
 	private 
 	def find_project
-		Project.find(params[:id])
+		current_user.projects.find(params[:id])
 	end
 
 	def project_params
