@@ -6,6 +6,7 @@ RSpec.describe Project, type: :model do
   end
 
   describe 'associations' do
+    it { should belong_to(:user) }
 		it { should have_one(:cover).dependent(:destroy) }
   end
 

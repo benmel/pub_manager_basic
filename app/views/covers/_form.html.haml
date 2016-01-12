@@ -1,7 +1,7 @@
 = form_for @cover, url: project_cover_path do |f|
 	- if @cover.errors.any?
-		.error_explanation
-			%h2= "#{pluralize(@cover.errors.count, 'error')} prohibited this article from being saved:"
+		#error_explanation
+			%h2= "#{pluralize(@cover.errors.count, "error")} prohibited this article from being saved:"
 			%ul
 				- @cover.errors.full_messages.each do |msg|
 					%li= msg
@@ -11,4 +11,5 @@
 	.form-group
 		= f.label :license
 		= f.text_field :license, class: 'form-control'
-	= f.submit class: 'btn btn-default'
+	.actions	
+		= f.submit class: 'btn btn-default'

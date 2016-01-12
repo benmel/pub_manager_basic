@@ -1,0 +1,12 @@
+%table.table
+  %thead
+    %tr
+      %th Name
+      %th
+  %tbody
+    - @templates.each do |template|
+      %tr
+        %td= template.name
+        %td= link_to 'View', template_path(template)
+
+= link_to 'New Template', new_template_path, class: 'btn btn-default'

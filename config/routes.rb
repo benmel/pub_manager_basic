@@ -62,4 +62,6 @@ Rails.application.routes.draw do
     resource :cover
   end
 
+  resources :templates
+
 end
