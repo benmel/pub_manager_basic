@@ -1,0 +1,27 @@
+.row
+	.col-md-2
+		%b= label(:description, :template)
+	.col-md-10	
+		= @description.template
+.row
+	.col-md-2
+		%b= label(:description, :content)
+	.col-md-10	
+		= @description.content
+.row
+	.col-md-2
+		%b= label(:description, :chapter_list)
+	.col-md-10	
+		= @description.chapter_list
+.row
+	.col-md-2
+		%b= label(:description, :excerpt)
+	.col-md-10	
+		= @description.excerpt			
+.row
+	.col-md-2
+		%b= label(:description, :filled_parameters)
+	.col-md-10
+		= @description.filled_parameters.map(&:name).join(', ')			
+= link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
+= link_to 'Back', project_path(@project), class: 'btn btn-default'

@@ -20,11 +20,6 @@
 		= @project.keywords
 .row
 	.col-md-2
-		%b= label(:project, :description)
-	.col-md-10
-		= @project.description
-.row
-	.col-md-2
 		%b= label(:project, :isbn10)
 	.col-md-10
 		= @project.isbn10
@@ -41,5 +36,14 @@
 			= link_to('Edit Cover', edit_project_cover_path(@project))
 		- else
 			= link_to('Create Cover', new_project_cover_path(@project))
+.row
+	.col-md-2
+		%b= label(:project, :description)
+	.col-md-10
+		- if @project.description
+			= link_to('Edit Description', edit_project_description_path(@project))
+		- else
+			= link_to('Create Description', new_project_description_path(@project))
+
 = link_to 'Edit', edit_project_path(@project), class: 'btn btn-default'
 = link_to 'Back', projects_path, class: 'btn btn-default'

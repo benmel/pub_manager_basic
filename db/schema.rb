@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111194207) do
+ActiveRecord::Schema.define(version: 20160112034828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,28 @@ ActiveRecord::Schema.define(version: 20160111194207) do
   end
 
   add_index "covers", ["project_id"], name: "index_covers_on_project_id", using: :btree
+
+  create_table "descriptions", force: :cascade do |t|
+    t.integer  "project_id"
+    t.text     "template"
+    t.text     "content"
+    t.text     "chapter_list"
+    t.text     "excerpt"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "descriptions", ["project_id"], name: "index_descriptions_on_project_id", using: :btree
+
+  create_table "filled_parameters", force: :cascade do |t|
+    t.integer  "description_id"
+    t.text     "name"
+    t.text     "value"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "filled_parameters", ["description_id"], name: "index_filled_parameters_on_description_id", using: :btree
 
   create_table "parameters", force: :cascade do |t|
     t.integer  "template_id"
@@ -40,11 +62,10 @@ ActiveRecord::Schema.define(version: 20160111194207) do
     t.text     "subtitle"
     t.text     "author"
     t.text     "keywords"
-    t.text     "description"
     t.text     "isbn10"
     t.text     "isbn13"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer  "user_id"
   end
 
@@ -79,6 +100,8 @@ ActiveRecord::Schema.define(version: 20160111194207) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "covers", "projects"
+  add_foreign_key "descriptions", "projects"
+  add_foreign_key "filled_parameters", "descriptions"
   add_foreign_key "parameters", "templates"
   add_foreign_key "projects", "users"
   add_foreign_key "templates", "users"

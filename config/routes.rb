@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   resources :projects do
+    resource :description
     resource :cover
   end
 
