@@ -1,6 +1,7 @@
-.form-group
+.form-group.filled-parameters
 	= f.label :name, 'Parameter Name'
 	= f.text_field :name, class: 'form-control'
 	= f.label :value, 'Parameter Value'
 	= f.text_field :value, class: 'form-control'
-	= button_to_remove_fields 'Remove', f, 'btn btn-default'
+	= f.hidden_field(:_destroy)
+	= button_tag 'Remove', type: :button, class: 'btn btn-default remove-description-parameter-button'

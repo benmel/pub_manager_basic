@@ -21,14 +21,19 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe "GET #show" do
-    before(:each) { get :show, id: template }
-
     it 'assigns @template' do
+      get :show, id: template
       expect(assigns(:template)).to eq(template)
     end
 
     it 'renders the #show template' do
+      get :show, id: template
       expect(response).to render_template(:show)
+    end
+
+    it 'renders the #show json' do
+      get :show, id: template, format: :json
+      expect(response.body).to eq(template.to_json(include: :parameters))
     end
   end
 

@@ -41,9 +41,14 @@ RSpec.describe DescriptionsController, type: :controller do
 		
 		context 'description does not exist' do
 			before(:each) { get :new, project_id: @project }
+			let(:template) { create(:template, user: @user) }
 
 			it 'assigns a new @description' do
 				expect(assigns(:description)).to be_a_new(Description)
+			end
+
+			it 'assigns @templates' do
+				expect(assigns(:templates)).to eq([template])
 			end
 
 			it 'renders the #new template' do

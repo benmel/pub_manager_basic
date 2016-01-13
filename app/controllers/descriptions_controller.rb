@@ -12,6 +12,7 @@ class DescriptionsController < ApplicationController
 		if Description.exists? project_id: @project
 			redirect_to edit_project_description_path
 		else
+			@templates = find_templates
 			@description = Description.new
 		end
 	end
@@ -51,6 +52,10 @@ class DescriptionsController < ApplicationController
 	private
 	def find_project
 		current_user.projects.find(params[:project_id])
+	end
+
+	def find_templates
+		current_user.templates.order(:name).all
 	end
 
 	def description_params

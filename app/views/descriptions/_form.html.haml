@@ -19,7 +19,11 @@
 		= f.text_area :excerpt, rows: 10, class: 'form-control'	
 	= f.fields_for :filled_parameters do |builder|
 		= render 'filled_parameter_fields', f: builder
-	= button_to_add_fields 'Add Parameter', f, :filled_parameters, 'btn btn-default'
+	= button_tag 'Add Parameter', type: :button, class: 'btn btn-default add-description-parameter-button'	
 	.actions
 		%br
 		= f.submit class: 'btn btn-default'
+
+.hidden-fields
+	= fields_for @description do |builder|
+		= add_fields 'Add Parameter', builder, :filled_parameters		
