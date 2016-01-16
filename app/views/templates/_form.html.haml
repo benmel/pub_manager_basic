@@ -10,6 +10,7 @@
 		= f.text_field :name, class: 'form-control'
 	.form-group
 		= f.label :content
+		%p The following parameters are provided: title, subtitle, author, content, chapters (an array), excerpt and marketplace (kindle, createspace or acx)
 		= f.text_area :content, rows: 10, class: 'form-control'
 	= f.fields_for :parameters do |builder|
 		= render 'parameter_fields', f: builder

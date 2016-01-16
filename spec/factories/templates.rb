@@ -3,5 +3,13 @@ FactoryGirl.define do
     user
 		content Faker::Lorem.paragraph
 		name Faker::Lorem.word
+
+		trait :valid_content do
+			content 'Hello {{ name }}'
+		end
+
+		trait :invalid_content do
+			content 'Hello {{ name'
+		end
   end
 end

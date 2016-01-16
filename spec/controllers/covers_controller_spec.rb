@@ -13,6 +13,10 @@ RSpec.describe CoversController, type: :controller do
 		context 'cover exists' do
 			before(:each) { get :show, project_id: cover.project }
 			
+			it 'assigns @project' do
+				expect(assigns(:project)).to eq(cover.project)
+			end
+
 			it 'assigns @cover' do
 				expect(assigns(:cover)).to eq(cover)
 			end

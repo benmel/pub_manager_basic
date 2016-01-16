@@ -49,13 +49,22 @@ class DescriptionsController < ApplicationController
 		redirect_to @project
 	end
 
+	def preview
+		@project = find_project
+		@description = @project.description
+		raise ActiveRecord::RecordNotFound unless @description
+		@kindle = @description.kindle
+		@createspace = @description.createspace
+		@acx = @description.acx
+	end
+
 	private
 	def find_project
 		current_user.projects.find(params[:project_id])
 	end
 
 	def find_templates
-		current_user.templates.order(:name).all
+		current_user.templates.order('LOWER(name)').all
 	end
 
 	def description_params

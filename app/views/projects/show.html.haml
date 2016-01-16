@@ -33,17 +33,18 @@
 		%b= label(:project, :cover)
 	.col-md-10
 		- if @project.cover
-			= link_to('Edit Cover', edit_project_cover_path(@project))
+			= link_to('Edit', edit_project_cover_path(@project))
 		- else
-			= link_to('Create Cover', new_project_cover_path(@project))
+			= link_to('Create', new_project_cover_path(@project))
 .row
 	.col-md-2
 		%b= label(:project, :description)
 	.col-md-10
 		- if @project.description
-			= link_to('Edit Description', edit_project_description_path(@project))
+			= link_to('Preview', preview_project_description_path(@project))
+			\|
+			= link_to('Edit', edit_project_description_path(@project))
 		- else
-			= link_to('Create Description', new_project_description_path(@project))
-
+			= link_to('Create', new_project_description_path(@project))
 = link_to 'Edit', edit_project_path(@project), class: 'btn btn-default'
 = link_to 'Back', projects_path, class: 'btn btn-default'

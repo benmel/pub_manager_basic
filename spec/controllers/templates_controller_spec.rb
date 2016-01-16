@@ -75,7 +75,10 @@ RSpec.describe TemplatesController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before(:each) { post :create, template: attributes_for(:template, content: nil) }
+      before :each do
+        template_invalid = build(:template, :invalid_content)
+        post :create, template: template_invalid.attributes
+      end
 
       it 'does not create the template' do
         expect(Template.count).to eq(0)
@@ -89,10 +92,10 @@ RSpec.describe TemplatesController, type: :controller do
 
   describe "PATCH #update" do
     context 'with valid attributes' do
-      before(:each) { patch :update, id: template, template: attributes_for(:template, name: 'New Name') }
+      before(:each) { patch :update, id: template, template: attributes_for(:template, :valid_content) }
       
       it 'updates the template' do
-        expect(template.reload.name).to eq('New Name')
+        expect(template.reload.content).to eq('Hello {{ name }}')
       end
 
       it 'redirects to #show the updated template' do
@@ -101,10 +104,13 @@ RSpec.describe TemplatesController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before(:each) { patch :update, id: template, template: attributes_for(:template, name: '') }
+      before :each do
+        @template_invalid = build(:template, :invalid_content)
+        patch :update, id: template, template: @template_invalid.attributes
+      end
 
       it 'does not update the template' do
-        expect(template.name).to eq(template.reload.name)
+        expect(template.reload.content).to_not eq(@template_invalid.content)
       end
 
       it 'renders the #edit template' do

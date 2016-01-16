@@ -1,0 +1,33 @@
+.row
+	.col-md-12
+		%h3 Kindle
+.row
+	.col-md-6
+		%h4 HTML
+		= @kindle
+	.col-md-6
+		%h4 Output
+		= raw @kindle
+.row
+	.col-md-12
+		%h3 Createspace
+.row
+	.col-md-6
+		%h4 HTML
+		= @createspace
+	.col-md-6
+		%h4 Output
+		= raw @createspace
+.row
+	.col-md-12
+		%h3 ACX
+.row
+	.col-md-6
+		%h4 HTML
+		= @acx
+	.col-md-6
+		%h4 Output
+		= raw @acx
+= link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
+= link_to 'Back', project_path(@project), class: 'btn btn-default'		
+		
