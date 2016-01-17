@@ -7,8 +7,9 @@ RSpec.describe Project, type: :model do
 
   describe 'associations' do
     it { should belong_to(:user) }
+		it { should have_one(:book).dependent(:destroy) }
+    it { should have_one(:cover).dependent(:destroy) }
     it { should have_one(:description).dependent(:destroy) }
-		it { should have_one(:cover).dependent(:destroy) }
   end
 
   describe 'validations' do

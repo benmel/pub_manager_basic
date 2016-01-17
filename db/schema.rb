@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112034828) do
+ActiveRecord::Schema.define(version: 20160117053219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "books", force: :cascade do |t|
+    t.integer  "project_id"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "books", ["project_id"], name: "index_books_on_project_id", using: :btree
 
   create_table "covers", force: :cascade do |t|
     t.text     "photographer"
@@ -71,6 +80,25 @@ ActiveRecord::Schema.define(version: 20160112034828) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
+  create_table "section_parameters", force: :cascade do |t|
+    t.integer  "section_id"
+    t.text     "name"
+    t.text     "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "section_parameters", ["section_id"], name: "index_section_parameters_on_section_id", using: :btree
+
+  create_table "sections", force: :cascade do |t|
+    t.integer  "book_id"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sections", ["book_id"], name: "index_sections_on_book_id", using: :btree
+
   create_table "templates", force: :cascade do |t|
     t.integer  "user_id"
     t.text     "content"
@@ -99,10 +127,13 @@ ActiveRecord::Schema.define(version: 20160112034828) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "books", "projects"
   add_foreign_key "covers", "projects"
   add_foreign_key "descriptions", "projects"
   add_foreign_key "filled_parameters", "descriptions"
   add_foreign_key "parameters", "templates"
   add_foreign_key "projects", "users"
+  add_foreign_key "section_parameters", "sections"
+  add_foreign_key "sections", "books"
   add_foreign_key "templates", "users"
 end
