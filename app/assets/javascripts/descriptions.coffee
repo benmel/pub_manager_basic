@@ -12,13 +12,7 @@ $ ->
 	        console.log(textStatus)
 	      success: (data, textStatus, jqXHR) ->
 	        fillForm(data)
-  
-  $(document).on 'click', 'button.add-description-parameter-button', ->
- 		addParameter($(this))
- 	
- 	$(document).on 'click', 'button.remove-description-parameter-button', ->
-  	removeParameter($(this))
-  
+    
   fillForm = (data) ->
   	$('#description_template').val(data.content)
   	$('form .filled-parameters').remove()
@@ -32,8 +26,4 @@ $ ->
  	addParameter = (node) ->
  		newId = new Date().getTime();
  		regexp = new RegExp('new_filled_parameters', 'g')
- 		node.before($('div.hidden-fields')[0].innerHTML.replace(regexp, newId))
-
- 	removeParameter = (node) ->
- 		node.prev('form input[type=hidden]').val('1');
-  	node.closest('form .filled-parameters').hide();		
+ 		node.before($('div.hidden-fields')[0].innerHTML.replace(regexp, newId))	
