@@ -1,27 +1,9 @@
-= form_for @project do |f|
-	- if @project.errors.any?
-		#error_explanation
-			%h2= "#{pluralize(@project.errors.count, "error")} prohibited this article from being saved:"
-			%ul
-				- @project.errors.full_messages.each do |msg|
-					%li= msg
-	.form-group
-		= f.label :title
-		= f.text_field :title, class: 'form-control'
-	.form-group
-		= f.label :subtitle
-		= f.text_field :subtitle, class: 'form-control'
-	.form-group
-		= f.label :author
-		= f.text_field :author, class: 'form-control'
-	.form-group
-		= f.label :keywords
-		= f.text_field :keywords, class: 'form-control'
-	.form-group
-		= f.label :isbn10
-		= f.text_field :isbn10, class: 'form-control'
-	.form-group
-		= f.label :isbn13
-		= f.text_field :isbn13, class: 'form-control'
-	.actions
-		= f.submit class: 'btn btn-default'
+= simple_form_for @project do |f|
+	= f.full_error :base
+	= f.input :title, as: :string
+	= f.input :subtitle, as: :string
+	= f.input :author, as: :string
+	= f.input :keywords, as: :string
+	= f.input :isbn10, as: :string
+	= f.input :isbn13, as: :string
+	= f.button :submit			

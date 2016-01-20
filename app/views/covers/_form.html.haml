@@ -1,15 +1,5 @@
-= form_for @cover, url: project_cover_path do |f|
-	- if @cover.errors.any?
-		#error_explanation
-			%h2= "#{pluralize(@cover.errors.count, "error")} prohibited this article from being saved:"
-			%ul
-				- @cover.errors.full_messages.each do |msg|
-					%li= msg
-	.form-group
-		= f.label :photographer
-		= f.text_field :photographer, class: 'form-control'
-	.form-group
-		= f.label :license
-		= f.text_field :license, class: 'form-control'
-	.actions	
-		= f.submit class: 'btn btn-default'
+= simple_form_for @cover, url: project_cover_path do |f|
+	= f.full_error :base
+	= f.input :photographer, as: :string
+	= f.input :license, as: :string
+	= f.button :submit
