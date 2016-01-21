@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :filled_parameter do
+  factory :description_parameter do
     description
 		name Faker::Lorem.word
 		value Faker::Lorem.word

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160117053219) do
+ActiveRecord::Schema.define(version: 20160121182344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20160117053219) do
 
   add_index "covers", ["project_id"], name: "index_covers_on_project_id", using: :btree
 
+  create_table "description_parameters", force: :cascade do |t|
+    t.integer  "description_id"
+    t.text     "name"
+    t.text     "value"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "description_parameters", ["description_id"], name: "index_description_parameters_on_description_id", using: :btree
+
   create_table "descriptions", force: :cascade do |t|
     t.integer  "project_id"
     t.text     "template"
@@ -46,25 +56,6 @@ ActiveRecord::Schema.define(version: 20160117053219) do
   end
 
   add_index "descriptions", ["project_id"], name: "index_descriptions_on_project_id", using: :btree
-
-  create_table "filled_parameters", force: :cascade do |t|
-    t.integer  "description_id"
-    t.text     "name"
-    t.text     "value"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  add_index "filled_parameters", ["description_id"], name: "index_filled_parameters_on_description_id", using: :btree
-
-  create_table "parameters", force: :cascade do |t|
-    t.integer  "template_id"
-    t.text     "name"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "parameters", ["template_id"], name: "index_parameters_on_template_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.text     "title"
@@ -99,6 +90,15 @@ ActiveRecord::Schema.define(version: 20160117053219) do
 
   add_index "sections", ["book_id"], name: "index_sections_on_book_id", using: :btree
 
+  create_table "template_parameters", force: :cascade do |t|
+    t.integer  "template_id"
+    t.text     "name"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "template_parameters", ["template_id"], name: "index_template_parameters_on_template_id", using: :btree
+
   create_table "templates", force: :cascade do |t|
     t.integer  "user_id"
     t.text     "content"
@@ -129,11 +129,11 @@ ActiveRecord::Schema.define(version: 20160117053219) do
 
   add_foreign_key "books", "projects"
   add_foreign_key "covers", "projects"
+  add_foreign_key "description_parameters", "descriptions"
   add_foreign_key "descriptions", "projects"
-  add_foreign_key "filled_parameters", "descriptions"
-  add_foreign_key "parameters", "templates"
   add_foreign_key "projects", "users"
   add_foreign_key "section_parameters", "sections"
   add_foreign_key "sections", "books"
+  add_foreign_key "template_parameters", "templates"
   add_foreign_key "templates", "users"
 end

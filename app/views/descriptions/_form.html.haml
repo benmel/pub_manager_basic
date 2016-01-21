@@ -4,11 +4,11 @@
 	= f.input :content, input_html: { rows: 10 }
 	= f.input :chapter_list, as: :string, hint: 'List of chapters separated by a semicolon'
 	= f.input :excerpt, input_html: { rows: 10 }
-	#filled-parameters
-		= f.simple_fields_for :filled_parameters do |filled_parameter|
-			= render 'filled_parameter_fields', f: filled_parameter
+	#description-parameters
+		= f.simple_fields_for :description_parameters do |description_parameter|
+			= render 'description_parameter_fields', f: description_parameter
 		.links
 			%br	
-			= link_to_add_association 'Add Parameter', f, :filled_parameters, class: 'btn btn-default'
+			= link_to_add_association 'Add Parameter', f, :description_parameters, class: 'btn btn-default'
 		%br	
 	= f.button :submit				

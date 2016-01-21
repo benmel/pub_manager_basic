@@ -7,7 +7,7 @@ RSpec.describe Template, type: :model do
 
   describe 'associations' do
   	it { should belong_to(:user).inverse_of(:templates) }
-  	it { should have_many(:parameters).inverse_of(:template).dependent(:destroy) }
+  	it { should have_many(:template_parameters).inverse_of(:template).dependent(:destroy) }
   end
 
   describe 'presence validations' do
@@ -28,7 +28,7 @@ RSpec.describe Template, type: :model do
 
   describe 'nested attributes' do
 		it do
-			should accept_nested_attributes_for(:parameters).
+			should accept_nested_attributes_for(:template_parameters).
 				allow_destroy(true)
 		end
   end

@@ -5,7 +5,7 @@ RSpec.describe Description, type: :model do
   let(:description_with_valid_template) { build(:description, :valid_template) }
   let(:description_with_invalid_template) { build(:description, :invalid_template) }
   let(:description_with_marketplace_template) { build(:description, :marketplace_template) }
-  let(:description_with_filled_parameters) { create(:description_with_filled_parameters) }
+  let(:description_with_description_parameters) { create(:description_with_description_parameters) }
 
   it 'has a valid factory' do
   	expect(build(:description)).to be_valid
@@ -13,7 +13,7 @@ RSpec.describe Description, type: :model do
 
   describe 'associations' do
     it { should belong_to(:project).inverse_of(:description) }
-    it { should have_many(:filled_parameters).inverse_of(:description).dependent(:destroy) }
+    it { should have_many(:description_parameters).inverse_of(:description).dependent(:destroy) }
   end
 
   describe 'presence validations' do
@@ -32,7 +32,7 @@ RSpec.describe Description, type: :model do
 
   describe 'nested attributes' do
     it do
-      should accept_nested_attributes_for(:filled_parameters).
+      should accept_nested_attributes_for(:description_parameters).
         allow_destroy(true)
     end
   end
@@ -84,7 +84,7 @@ RSpec.describe Description, type: :model do
       allow(description).to receive(:project_hash).and_return({})
       allow(description).to receive(:description_hash).and_return({})
       allow(description).to receive(:chapters_hash).and_return({})
-      allow(description).to receive(:filled_parameters_hash).and_return({})
+      allow(description).to receive(:description_parameters_hash).and_return({})
     end
 
     it 'should create a hash with the marketplace' do
@@ -112,24 +112,24 @@ RSpec.describe Description, type: :model do
     end
   end
 
-  describe 'filled_parameters_hash' do
-    it 'should create a hash using the filled parameters' do
-      expect(description_with_filled_parameters.filled_parameters_hash).to eq(description_with_filled_parameters.filled_parameters.pluck(:name, :value).to_h)
+  describe 'description_parameters_hash' do
+    it 'should create a hash using the description parameters' do
+      expect(description_with_description_parameters.description_parameters_hash).to eq(description_with_description_parameters.description_parameters.pluck(:name, :value).to_h)
     end
   end
 
-  describe 'set_template_and_filled_parameters_from(template)' do
+  describe 'set_template_and_description_parameters_from(template)' do
     let(:template) { create(:template) }
 
     it 'should set the template' do
-      description.set_template_and_filled_parameters_from(template)
+      description.set_template_and_description_parameters_from(template)
       expect(description.template).to eq(template.content)
     end
 
-    it 'should set the filled parameters' do
-      parameter = create(:parameter, template: template)
-      description.set_template_and_filled_parameters_from(template)
-      expect(description.filled_parameters.first.name).to eq(parameter.name)
+    it 'should set the description parameters' do
+      template_parameter = create(:template_parameter, template: template)
+      description.set_template_and_description_parameters_from(template)
+      expect(description.description_parameters.first.name).to eq(template_parameter.name)
     end
   end
 end

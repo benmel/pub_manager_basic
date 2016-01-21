@@ -1,9 +1,9 @@
 class Template < ActiveRecord::Base
   belongs_to :user, inverse_of: :templates
-  has_many :parameters, inverse_of: :template, dependent: :destroy
+  has_many :template_parameters, inverse_of: :template, dependent: :destroy
   validates :name, presence: true
   validates :content, presence: true
-  accepts_nested_attributes_for :parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :template_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
 
 	validate :no_liquid_template_errors
 

@@ -2,11 +2,11 @@
 	= f.full_error :base
 	= f.input :name, as: :string
 	= f.input :content, hint: 'The following parameters are provided: title, subtitle, author, content, chapters (an array), excerpt and marketplace (kindle, createspace or acx)', input_html: { rows: 10 }
-	#parameters
-		= f.simple_fields_for :parameters do |parameter|
-			= render 'parameter_fields', f: parameter
+	#template-parameters
+		= f.simple_fields_for :template_parameters do |template_parameter|
+			= render 'template_parameter_fields', f: template_parameter
 		.links
 			%br	
-			= link_to_add_association 'Add Parameter', f, :parameters, class: 'btn btn-default'
+			= link_to_add_association 'Add Parameter', f, :template_parameters, class: 'btn btn-default'
 		%br	
 	= f.button :submit

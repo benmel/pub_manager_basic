@@ -1,8 +1,8 @@
 class Description < ActiveRecord::Base
   belongs_to :project, inverse_of: :description
-  has_many :filled_parameters, inverse_of: :description, dependent: :destroy
+  has_many :description_parameters, inverse_of: :description, dependent: :destroy
   validates :template, presence: true
-  accepts_nested_attributes_for :filled_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :description_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
 
   validate :no_liquid_template_errors
 
@@ -34,7 +34,7 @@ class Description < ActiveRecord::Base
 
   def parameters_hash(marketplace)
   	marketplace_hash = { 'marketplace' => marketplace }
-  	[marketplace_hash, project_hash, description_hash, chapters_hash, filled_parameters_hash].inject(:merge)
+  	[marketplace_hash, project_hash, description_hash, chapters_hash, description_parameters_hash].inject(:merge)
   end
 
   def project_hash
@@ -49,12 +49,12 @@ class Description < ActiveRecord::Base
   	@chapters_hash ||= { 'chapters' => self.chapter_list.split(';') }
   end
 
-  def filled_parameters_hash
-  	@filled_parameters_hash ||= self.filled_parameters.pluck(:name, :value).to_h
+  def description_parameters_hash
+  	@description_parameters_hash ||= self.description_parameters.pluck(:name, :value).to_h
   end
 
-  def set_template_and_filled_parameters_from(template)
+  def set_template_and_description_parameters_from(template)
     self.template = template.content
-    template.parameters.each { |parameter| self.filled_parameters.build(name: parameter.name) }
+    template.template_parameters.each { |template_parameter| self.description_parameters.build(name: template_parameter.name) }
   end
 end

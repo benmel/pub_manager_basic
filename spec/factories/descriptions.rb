@@ -18,13 +18,13 @@ FactoryGirl.define do
 			template "{% if marketplace == 'kindle' %}kindle content{% elsif marketplace == 'createspace' %}createspace content{% elsif marketplace == 'acx' %}acx content{% endif %}"
 		end
 
-		factory :description_with_filled_parameters do
+		factory :description_with_description_parameters do
 			transient do
-        filled_parameters_count 5
+        description_parameters_count 5
       end
 
       after(:create) do |description, evaluator|
-        create_list(:filled_parameter, evaluator.filled_parameters_count, description: description)
+        create_list(:description_parameter, evaluator.description_parameters_count, description: description)
       end
 		end
   end

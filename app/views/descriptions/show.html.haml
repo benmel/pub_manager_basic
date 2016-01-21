@@ -20,8 +20,8 @@
 		= @description.excerpt			
 .row
 	.col-md-2
-		%b= label(:description, :filled_parameters)
+		%b= label(:description, :description_parameters)
 	.col-md-10
-		= @description.filled_parameters.map(&:name).join(', ')			
+		= @description.description_parameters.map(&:name).join(', ')			
 = link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
 = link_to 'Back', project_path(@project), class: 'btn btn-default'

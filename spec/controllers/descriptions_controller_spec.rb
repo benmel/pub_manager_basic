@@ -230,9 +230,9 @@ RSpec.describe DescriptionsController, type: :controller do
 					expect(assigns(:description)).to be_a_new(Description)
 				end
 
-				it 'sets the description template and filled parameters' do
+				it 'sets the description template and description parameters' do
 					description = Description.new
-					description.set_template_and_filled_parameters_from @template
+					description.set_template_and_description_parameters_from @template
 					expect(assigns(:description).template).to eq(description.template)
 				end	
 			end

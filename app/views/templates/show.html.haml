@@ -10,8 +10,8 @@
 		= @template.content
 .row
 	.col-md-2
-		%b= label(:template, :parameters)
+		%b= label(:template, :template_parameters)
 	.col-md-10
-		= @template.parameters.map(&:name).join(', ')			
+		= @template.template_parameters.map(&:name).join(', ')			
 = link_to 'Edit', edit_template_path(@template), class: 'btn btn-default'
 = link_to 'Back', templates_path, class: 'btn btn-default'
