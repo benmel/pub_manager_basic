@@ -1,4 +1,4 @@
-= select_tag 'choose_template', options_from_collection_for_select(@templates, 'id', 'name'), prompt: 'Choose a description template', class: 'form-control'
+= select_tag 'choose_template', options_from_collection_for_select(@templates, 'id', 'name'), prompt: 'Choose a description template', class: 'form-control', data: { url: form_project_description_path }
 = render 'form'
 %br		
 = link_to 'Back', project_path(@project), class: 'btn btn-default'

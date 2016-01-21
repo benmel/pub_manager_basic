@@ -52,4 +52,9 @@ class Description < ActiveRecord::Base
   def filled_parameters_hash
   	@filled_parameters_hash ||= self.filled_parameters.pluck(:name, :value).to_h
   end
+
+  def set_template_and_filled_parameters_from(template)
+    self.template = template.content
+    template.parameters.each { |parameter| self.filled_parameters.build(name: parameter.name) }
+  end
 end

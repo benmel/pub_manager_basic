@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
+	render_views
+
 	before(:each) do
 		@user ||= create(:user)
 		sign_in @user
@@ -9,7 +11,10 @@ RSpec.describe ProjectsController, type: :controller do
 	let(:project) { create(:project, user: @user) }
 
 	describe 'GET #index' do
-		before(:each) { get :index }
+		before(:each) do
+			project # need to create project before get
+			get :index
+		end
 
 		it 'assigns @projects' do
 			expect(assigns(:projects)).to eq([project])

@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe CoversController, type: :controller do
+	render_views
+
 	before(:each) do
 		@user ||= create(:user)
 		sign_in @user
-		@project ||= create(:project, user: @user)
 	end
 
-	let(:cover) { create(:cover, project: @project) }
+	let(:project) { create(:project, user: @user) }
+	let(:cover) { create(:cover, project: project) }
 
 	describe 'GET #show' do
 		context 'cover exists' do
@@ -29,7 +31,7 @@ RSpec.describe CoversController, type: :controller do
 		context 'cover does not exist' do
 			it 'raises an error' do
 				expect { 
-					get :show, project_id: @project 
+					get :show, project_id: project 
 				}.to raise_error(ActiveRecord::RecordNotFound) 
 			end
 		end
@@ -44,7 +46,7 @@ RSpec.describe CoversController, type: :controller do
 		end
 		
 		context 'cover does not exist' do
-			before(:each) { get :new, project_id: @project }
+			before(:each) { get :new, project_id: project }
 
 			it 'assigns a new @cover' do
 				expect(assigns(:cover)).to be_a_new(Cover)
@@ -73,7 +75,7 @@ RSpec.describe CoversController, type: :controller do
 		context 'cover does not exist' do
 			it 'raises an error' do
 				expect { 
-					get :edit, project_id: @project 
+					get :edit, project_id: project 
 				}.to raise_error(ActiveRecord::RecordNotFound) 
 			end
 		end
@@ -81,19 +83,19 @@ RSpec.describe CoversController, type: :controller do
 
 	describe 'POST #create' do
 		context 'with valid attributes' do
-			before(:each) { post :create, project_id: @project, cover: attributes_for(:cover) }
+			before(:each) { post :create, project_id: project, cover: attributes_for(:cover) }
 
 			it 'creates the cover' do
 				expect(Cover.count).to eq(1)
 			end
 
 			it 'redirects to #show for the project' do
-				expect(response).to redirect_to(@project)
+				expect(response).to redirect_to(project)
 			end
 		end
 
 		context 'with invalid attributes' do
-			before(:each) { post :create, project_id: @project, cover: attributes_for(:cover, photographer: nil) }
+			before(:each) { post :create, project_id: project, cover: attributes_for(:cover, photographer: nil) }
 
 			it 'does not create the cover' do
 				expect(Cover.count).to eq(0)

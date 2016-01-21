@@ -117,4 +117,19 @@ RSpec.describe Description, type: :model do
       expect(description_with_filled_parameters.filled_parameters_hash).to eq(description_with_filled_parameters.filled_parameters.pluck(:name, :value).to_h)
     end
   end
+
+  describe 'set_template_and_filled_parameters_from(template)' do
+    let(:template) { create(:template) }
+
+    it 'should set the template' do
+      description.set_template_and_filled_parameters_from(template)
+      expect(description.template).to eq(template.content)
+    end
+
+    it 'should set the filled parameters' do
+      parameter = create(:parameter, template: template)
+      description.set_template_and_filled_parameters_from(template)
+      expect(description.filled_parameters.first.name).to eq(parameter.name)
+    end
+  end
 end

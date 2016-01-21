@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   resources :projects do
     resource :description do
       get :preview, on: :member
+      get :form, on: :member
     end
     resource :cover
   end

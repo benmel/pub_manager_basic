@@ -7,10 +7,6 @@ class TemplatesController < ApplicationController
 
   def show
     @template = find_template
-    respond_to do |format|
-      format.html
-      format.json { render json: @template, include: :parameters }
-    end
   end
 
   def new

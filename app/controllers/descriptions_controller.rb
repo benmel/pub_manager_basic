@@ -12,8 +12,8 @@ class DescriptionsController < ApplicationController
 		if Description.exists? project_id: @project
 			redirect_to edit_project_description_path
 		else
-			@templates = find_templates
 			@description = Description.new
+			@templates = find_templates
 		end
 	end
 
@@ -29,6 +29,7 @@ class DescriptionsController < ApplicationController
 		if @description.save
 			redirect_to @project
 		else
+			@templates = find_templates
 			render :new
 		end
 	end
@@ -58,9 +59,28 @@ class DescriptionsController < ApplicationController
 		@acx = @description.acx
 	end
 
+	def form
+		@project = find_project
+		if Description.exists? project_id: @project
+			@description = @project.description
+		else
+			@description = Description.new
+			# only render form with filled in template if template_id is present
+			if params[:template_id].present?
+				template = find_template
+				@description.set_template_and_filled_parameters_from template
+			end
+		end
+		render partial: 'form'
+	end
+
 	private
 	def find_project
 		current_user.projects.find(params[:project_id])
+	end
+
+	def find_template
+		current_user.templates.find(params[:template_id])
 	end
 
 	def find_templates

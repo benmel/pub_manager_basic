@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe DescriptionsController, type: :controller do
+	render_views
+
 	before(:each) do
 		@user ||= create(:user_with_projects)
 		sign_in @user
@@ -44,22 +46,23 @@ RSpec.describe DescriptionsController, type: :controller do
 		end
 		
 		context 'description does not exist' do
-			before(:each) { get :new, project_id: project_without_description }
-			let(:template) { create(:template, user: @user) }
+			before(:each) do
+				@template = create(:template, user: @user)
+				get :new, project_id: project_without_description
+			end
 
 			it 'assigns a new @description' do
 				expect(assigns(:description)).to be_a_new(Description)
 			end
 
 			it 'assigns @templates' do
-				expect(assigns(:templates)).to eq([template])
+				expect(assigns(:templates)).to eq([@template])
 			end
 
 			it 'renders the #new template' do
 				expect(response).to render_template(:new)
 			end
 		end
-
 	end
 
 	describe 'GET #edit' do
@@ -99,12 +102,17 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
+				@template = create(:template, user: @user)
 				description = build(:description, :invalid_template)
 				post :create, project_id: project_without_description, description: description.attributes
 			end
 
 			it 'does not create the description' do
 				expect(Description.count).to eq(0)
+			end
+
+			it 'assigns @templates' do
+				expect(assigns(:templates)).to eq([@template])
 			end
 
 			it 'renders the #new template' do
@@ -188,6 +196,55 @@ RSpec.describe DescriptionsController, type: :controller do
 				expect { 
 					get :preview, project_id: project_without_description 
 				}.to raise_error(ActiveRecord::RecordNotFound) 
+			end
+		end
+	end
+
+	describe 'GET #form' do
+		shared_examples 'common_get_form' do
+			it 'renders the form partial' do
+				expect(response).to render_template(partial: '_form')
+			end
+		end
+
+		context 'description exists' do
+			before(:each) { get :form, project_id: description_with_project.project }
+			
+			it_should_behave_like 'common_get_form'
+
+			it 'assigns @description' do
+				expect(assigns(:description)).to eq(description_with_project)
+			end
+		end
+
+		context 'description does not exist' do
+			context 'includes template_id param' do
+				before(:each) do
+					@template = create(:template, user: @user)
+					get :form, project_id: project_without_description, template_id: @template
+				end
+
+				it_should_behave_like 'common_get_form'
+
+				it 'assigns a new @description' do
+					expect(assigns(:description)).to be_a_new(Description)
+				end
+
+				it 'sets the description template and filled parameters' do
+					description = Description.new
+					description.set_template_and_filled_parameters_from @template
+					expect(assigns(:description).template).to eq(description.template)
+				end	
+			end
+
+			context 'does not include template_id param' do
+				before(:each) { get :form, project_id: project_without_description }
+
+				it_should_behave_like 'common_get_form'
+
+				it 'assigns a new @description' do
+					expect(assigns(:description)).to be_a_new(Description)
+				end
 			end
 		end
 	end

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe TemplatesController, type: :controller do
+  render_views
+
   before(:each) do
     @user ||= create(:user)
     sign_in @user
@@ -9,7 +11,10 @@ RSpec.describe TemplatesController, type: :controller do
   let(:template) { create(:template, user: @user) }
 
   describe "GET #index" do
-    before(:each) { get :index }
+    before(:each) do
+      template # need to create template before get
+      get :index
+    end
 
     it 'assigns @templates' do
       expect(assigns(:templates)).to eq([template])
@@ -21,19 +26,14 @@ RSpec.describe TemplatesController, type: :controller do
   end
 
   describe "GET #show" do
+    before(:each) { get :show, id: template }
+
     it 'assigns @template' do
-      get :show, id: template
       expect(assigns(:template)).to eq(template)
     end
 
     it 'renders the #show template' do
-      get :show, id: template
       expect(response).to render_template(:show)
-    end
-
-    it 'renders the #show json' do
-      get :show, id: template, format: :json
-      expect(response.body).to eq(template.to_json(include: :parameters))
     end
   end
 
