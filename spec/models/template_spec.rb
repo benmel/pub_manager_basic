@@ -6,8 +6,8 @@ RSpec.describe Template, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:user) }
-  	it { should have_many(:parameters).dependent(:destroy) }
+  	it { should belong_to(:user).inverse_of(:templates) }
+  	it { should have_many(:parameters).inverse_of(:template).dependent(:destroy) }
   end
 
   describe 'presence validations' do

@@ -1,6 +1,6 @@
 class Description < ActiveRecord::Base
-  belongs_to :project
-  has_many :filled_parameters, dependent: :destroy
+  belongs_to :project, inverse_of: :description
+  has_many :filled_parameters, inverse_of: :description, dependent: :destroy
   validates :template, presence: true
   accepts_nested_attributes_for :filled_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
 

@@ -12,8 +12,8 @@ RSpec.describe Description, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:project) }
-    it { should have_many(:filled_parameters).dependent(:destroy) }
+    it { should belong_to(:project).inverse_of(:description) }
+    it { should have_many(:filled_parameters).inverse_of(:description).dependent(:destroy) }
   end
 
   describe 'presence validations' do

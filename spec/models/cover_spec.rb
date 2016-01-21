@@ -6,7 +6,7 @@ RSpec.describe Cover, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:project) }
+  	it { should belong_to(:project).inverse_of(:cover) }
   end
 
   describe 'validations' do

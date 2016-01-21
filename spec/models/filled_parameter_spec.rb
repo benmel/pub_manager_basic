@@ -6,7 +6,7 @@ RSpec.describe FilledParameter, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:description) }
+  	it { should belong_to(:description).inverse_of(:filled_parameters) }
   end
 
   describe 'validations' do

@@ -6,8 +6,8 @@ RSpec.describe Book, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:project) }
-    it { should have_many(:sections).dependent(:destroy) }
+    it { should belong_to(:project).inverse_of(:book) }
+    it { should have_many(:sections).inverse_of(:book).dependent(:destroy) }
   end
 
   describe 'presence validations' do

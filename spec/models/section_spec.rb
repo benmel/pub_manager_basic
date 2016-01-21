@@ -6,8 +6,8 @@ RSpec.describe Section, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:book) }
-    it { should have_many(:section_parameters).dependent(:destroy) }
+    it { should belong_to(:book).inverse_of(:sections) }
+    it { should have_many(:section_parameters).inverse_of(:section).dependent(:destroy) }
   end
 
   describe 'nested attributes' do

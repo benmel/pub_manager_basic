@@ -6,7 +6,7 @@ RSpec.describe SectionParameter, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:section) }
+  	it { should belong_to(:section).inverse_of(:section_parameters) }
   end
 
   describe 'validations' do

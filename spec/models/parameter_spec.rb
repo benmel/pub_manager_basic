@@ -6,7 +6,7 @@ RSpec.describe Parameter, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:template) }
+  	it { should belong_to(:template).inverse_of(:parameters) }
   end
 
   describe 'validations' do
