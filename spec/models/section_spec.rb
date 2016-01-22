@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Section, type: :model do
   it 'has a valid factory' do
-  	expect(build(:section)).to be_valid
+    expect(build(:section)).to be_valid
   end
 
   describe 'associations' do
@@ -18,6 +18,11 @@ RSpec.describe Section, type: :model do
   end
 
   describe 'presence validations' do
-	  it { should validate_presence_of(:content) }
+	  it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:content) }
+  end
+
+  describe 'ranked-model' do
+    it { should have_db_column(:row_order).of_type(:integer) }
   end
 end
