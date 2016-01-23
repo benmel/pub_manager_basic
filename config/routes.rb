@@ -66,6 +66,8 @@ Rails.application.routes.draw do
     resource :cover
   end
 
+  resources :books, except: [:edit, :update]
+
   resources :templates
 
 end
