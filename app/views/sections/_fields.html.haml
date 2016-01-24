@@ -1,0 +1,10 @@
+= f.input :name, as: :string
+= f.input :content
+.section-parameters
+	= f.simple_fields_for :section_parameters do |section_parameter|
+		= render 'section_parameters/fields', f: section_parameter
+	.links
+		%br	
+		= link_to_add_association 'Add Parameter', f, :section_parameters, partial: 'section_parameters/fields', class: 'btn btn-default'
+	%br
+= link_to_remove_association "Remove Section", f, class: 'btn btn-default'

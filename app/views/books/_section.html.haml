@@ -1,0 +1,4 @@
+.nested-fields
+	= select_tag "choose_section_hello_template", options_from_collection_for_select(@templates, 'id', 'name'), prompt: 'Choose a section template', class: 'choose_section_template form-control', data: { url: '' }
+	= render 'sections/fields', f: f
+	

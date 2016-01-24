@@ -1,2 +1,19 @@
-%h1 Books#show
-%p Find me in app/views/books/show.html.haml
+.row
+	.col-md-2
+		%b= label(:book, :front_section)
+	.col-md-10
+		= @book.front_section.content if @book.front_section
+.row	
+	.col-md-2
+		%b= label(:book, :toc_section)
+	.col-md-10
+		= @book.toc_section.content if @book.toc_section
+- @book.sections.each do |section|
+	.row	
+		.col-md-2
+			%b= label(:section, :name, section.name)
+		.col-md-10
+			= section.content		
+		
+= link_to 'Project', project_path(@book.project), class: 'btn btn-default' if @book.project
+= link_to 'Delete', book_path(@book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

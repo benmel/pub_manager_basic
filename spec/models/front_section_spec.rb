@@ -11,10 +11,7 @@ RSpec.describe FrontSection, type: :model do
   end
 
   describe 'nested attributes' do
-    it do
-      should accept_nested_attributes_for(:section_parameters).
-        allow_destroy(true)
-    end
+    it { should accept_nested_attributes_for(:section_parameters).allow_destroy(true) }
   end
 
   describe 'presence validations' do

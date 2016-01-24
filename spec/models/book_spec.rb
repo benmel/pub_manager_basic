@@ -11,4 +11,10 @@ RSpec.describe Book, type: :model do
     it { should have_one(:toc_section).inverse_of(:book).dependent(:destroy) }
     it { should have_many(:sections).inverse_of(:book).dependent(:destroy) }
   end
+
+  describe 'nested attributes' do
+    it { should accept_nested_attributes_for(:front_section) }
+    it { should accept_nested_attributes_for(:toc_section) }
+    it { should accept_nested_attributes_for(:sections) }
+  end
 end

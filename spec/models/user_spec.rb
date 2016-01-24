@@ -8,5 +8,6 @@ RSpec.describe User, type: :model do
   describe 'associations' do
   	it { should have_many(:projects).inverse_of(:user).dependent(:destroy) }
   	it { should have_many(:templates).inverse_of(:user).dependent(:destroy) }
+  	it { should have_many(:books).through(:projects) }
   end
 end

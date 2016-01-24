@@ -46,5 +46,14 @@
 			= link_to('Edit', edit_project_description_path(@project))
 		- else
 			= link_to('Create', new_project_description_path(@project))
+.row
+	.col-md-2
+		%b= label(:project, :book)
+	.col-md-10
+		- if @project.book
+			= link_to('View', book_path(@project.book))
+		- else
+			= link_to('Create', new_project_book_path(@project))
+			
 = link_to 'Edit', edit_project_path(@project), class: 'btn btn-default'
 = link_to 'Back', projects_path, class: 'btn btn-default'

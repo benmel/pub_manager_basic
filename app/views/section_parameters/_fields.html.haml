@@ -1,0 +1,4 @@
+.nested-fields
+	= f.input :name, label: 'Parameter Name', as: :string
+	= f.input :value, label: 'Parameter Value', as: :string
+	= link_to_remove_association "Remove Parameter", f, class: 'btn btn-default'

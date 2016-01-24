@@ -1,2 +1,13 @@
-%h1 Books#index
-%p Find me in app/views/books/index.html.haml
+%table.table
+	%thead
+		%tr
+			%th Project	
+			%th
+	%tbody
+		- @books.each do |book|
+			%tr
+				- if book.project
+					%td= book.project.title
+				- else
+					%td	
+				%td= link_to 'View', book_path(book)

@@ -5,4 +5,5 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :projects, inverse_of: :user, dependent: :destroy
   has_many :templates, inverse_of: :user, dependent: :destroy
+  has_many :books, through: :projects
 end
