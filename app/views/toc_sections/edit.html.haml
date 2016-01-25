@@ -1,0 +1,4 @@
+= render 'form'
+%br
+= link_to 'Delete', book_toc_section_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+= link_to 'Back', book_path(@book), class: 'btn btn-default'

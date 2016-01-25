@@ -10,7 +10,10 @@
 	.col-md-2
 		%b= label(:book, :toc_section)
 	.col-md-10
-		= @book.toc_section.content if @book.toc_section
+		- if @book.toc_section
+			= link_to('Edit', edit_book_toc_section_path(@book))
+		- else
+			= link_to('Create', new_book_toc_section_path(@book))
 - @book.sections.each do |section|
 	.row	
 		.col-md-2
