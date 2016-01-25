@@ -231,9 +231,7 @@ RSpec.describe DescriptionsController, type: :controller do
 				end
 
 				it 'sets the description template and description parameters' do
-					description = Description.new
-					description.set_template_and_description_parameters_from @template
-					expect(assigns(:description).template).to eq(description.template)
+					expect(assigns(:description).template).to eq(@template.content)
 				end	
 			end
 

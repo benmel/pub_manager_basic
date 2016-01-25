@@ -128,6 +128,112 @@ RSpec.describe BooksController, type: :controller do
     end
   end
 
+  describe 'GET #form' do
+    it 'assigns @project' do
+      get :form, project_id: book_with_project.project
+      expect(assigns(:project)).to eq(book_with_project.project)
+    end
+
+    it 'assigns @templates' do
+      template = create(:template, user: @user)
+      get :form, project_id: book_with_project.project
+      expect(assigns(:templates)).to eq([template])
+    end
+
+    context 'book exists' do
+      before(:each) { get :form, project_id: book_with_project.project }
+
+      it 'assigns @book' do
+        expect(assigns(:book)).to eq(book_with_project)
+      end
+
+      it 'renders the form partial' do
+        expect(response).to render_template(partial: '_form')
+      end
+    end
+
+    context 'book does not exist' do
+      it 'assigns a new @book' do
+        get :form, project_id: project_without_book
+        expect(assigns(:book)).to be_a_new(Book)
+      end
+
+      context 'does not include template_id param' do
+        it 'renders the form partial' do
+          get :form, project_id: project_without_book          
+          expect(response).to render_template(partial: '_form')
+        end
+      end
+
+      context 'includes template_id param' do
+        let(:template) { create(:template, user: @user) }
+
+        it 'assigns @template' do
+          get :form, project_id: project_without_book, template_id: template
+          expect(assigns(:template)).to eq(template)
+        end
+
+        context 'section_type param' do
+          context 'is front_section' do
+            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'front_section' }
+
+            it 'builds the front section' do
+              expect(assigns(:book).front_section).to_not be_nil
+            end
+
+            it 'sets the front section content and section parameters' do
+              expect(assigns(:book).front_section.content).to eq(template.content)
+            end
+
+            it 'renders the wrapper_front partial' do
+              expect(response).to render_template(partial: '_wrapper_front')
+            end
+          end
+
+          context 'is toc_section' do
+            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'toc_section' }
+
+            it 'builds the toc section' do
+              expect(assigns(:book).toc_section).to_not be_nil
+            end
+
+            it 'sets the toc section content and section parameters' do
+              expect(assigns(:book).toc_section.content).to eq(template.content)
+            end
+
+            it 'renders the wrapper_toc partial' do
+              expect(response).to render_template(partial: '_wrapper_toc')
+            end
+          end
+
+          context 'is section' do
+            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'section' }
+
+            it 'builds a section' do
+              expect(assigns(:book).sections.first).to_not be_nil
+            end
+
+            it 'sets the section content and section parameters' do
+              expect(assigns(:book).sections.first.content).to eq(template.content)
+            end
+
+            it 'renders the wrapper_sections partial' do
+              expect(response).to render_template(partial: '_wrapper_sections')              
+            end
+          end
+
+          context 'does not exist' do
+            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: '' }
+
+            it 'should render bad_request' do
+              expect(response.status).to eq(400)
+            end
+          end
+        end
+      end
+    end
+  end
+
   describe 'different user' do
     it 'raises an error' do
       sign_in create(:user)

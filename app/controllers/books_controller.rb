@@ -40,6 +40,39 @@ class BooksController < ApplicationController
     redirect_to @project
   end
 
+  def form
+    @project = find_project
+    @templates = find_templates
+    if Book.exists? project_id: @project
+      @book = @project.book
+      render partial: 'form'
+    else
+      @book = Book.new
+      unless params[:template_id].present?
+        render partial: 'form'
+      else  
+        @template = find_template
+        case params[:section_type]
+        when 'front_section'
+          @book.build_front_section
+          @book.set_front_section_content_and_section_parameters_from @template
+          render partial: 'wrapper_front'
+        when 'toc_section'
+          @book.build_toc_section
+          @book.set_toc_section_content_and_section_parameters_from @template
+          render partial: 'wrapper_toc'
+        when 'section'
+          @book.sections.build
+          @book.set_first_section_content_and_section_parameters_from @template
+          render partial: 'wrapper_sections'
+        else
+          # need both a template_id and section_type to create form
+          render text: 'Missing section_type', status: :bad_request
+        end
+      end
+    end
+  end
+
   private
   def find_book
     current_user.books.find(params[:id])
@@ -47,6 +80,10 @@ class BooksController < ApplicationController
 
   def find_project
     current_user.projects.find(params[:project_id])
+  end
+
+  def find_template
+    current_user.templates.find(params[:template_id])
   end
 
   def find_templates
