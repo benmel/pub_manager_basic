@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show, :destroy] do
     resource :front_section, except: :show
     resource :toc_section, except: :show
-    # resources :sections, except: [:index, :show]
+    resources :sections, except: [:index, :show]
   end
 
   resources :templates

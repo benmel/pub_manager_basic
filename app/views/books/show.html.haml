@@ -19,7 +19,10 @@
 		.col-md-2
 			%b= label(:section, :name, section.name)
 		.col-md-10
-			= section.content		
+			= link_to('Edit', edit_book_section_path(@book, section))
+.row
+	.col-md-12
+		= link_to('Create Section', new_book_section_path(@book))	
 		
 = link_to 'Project', project_path(@book.project), class: 'btn btn-default' if @book.project
 = link_to 'Delete', book_path(@book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
