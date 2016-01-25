@@ -7,7 +7,7 @@
 		= @kindle
 	.col-md-6
 		%h4 Output
-		= raw @kindle
+		= sanitize @kindle
 .row
 	.col-md-12
 		%h3 Createspace
@@ -17,7 +17,7 @@
 		= @createspace
 	.col-md-6
 		%h4 Output
-		= raw @createspace
+		= sanitize @createspace
 .row
 	.col-md-12
 		%h3 ACX
@@ -27,7 +27,7 @@
 		= @acx
 	.col-md-6
 		%h4 Output
-		= raw @acx
+		= sanitize @acx
 = link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
 = link_to 'Back', project_path(@project), class: 'btn btn-default'		
 		

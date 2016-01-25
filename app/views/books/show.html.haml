@@ -2,7 +2,10 @@
 	.col-md-2
 		%b= label(:book, :front_section)
 	.col-md-10
-		= @book.front_section.content if @book.front_section
+		- if @book.front_section
+			= link_to('Edit', edit_book_front_section_path(@book))
+		- else
+			= link_to('Create', new_book_front_section_path(@book))
 .row	
 	.col-md-2
 		%b= label(:book, :toc_section)

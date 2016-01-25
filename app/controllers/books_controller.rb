@@ -91,6 +91,9 @@ class BooksController < ApplicationController
   end
 
   def book_params
-    params.require(:book).permit(front_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],toc_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
+    params.require(:book).permit(
+      front_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
+      toc_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
+      sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
   end
 end
