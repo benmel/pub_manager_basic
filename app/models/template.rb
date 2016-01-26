@@ -3,7 +3,7 @@ class Template < ActiveRecord::Base
   has_many :template_parameters, inverse_of: :template, dependent: :destroy
   validates :name, presence: true
   validates :content, presence: true
-  accepts_nested_attributes_for :template_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :template_parameters, reject_if: :all_blank, allow_destroy: true
 
 	validate :no_liquid_template_errors
 

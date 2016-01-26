@@ -2,7 +2,7 @@ class Description < ActiveRecord::Base
   belongs_to :project, inverse_of: :description
   has_many :description_parameters, inverse_of: :description, dependent: :destroy
   validates :template, presence: true
-  accepts_nested_attributes_for :description_parameters, reject_if: lambda { |attributes| attributes[:name].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :description_parameters, reject_if: :all_blank, allow_destroy: true
 
   validate :no_liquid_template_errors
 
