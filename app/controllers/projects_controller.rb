@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
 	before_action :authenticate_user!
 
 	def index
-		@projects = current_user.projects
+		@projects = find_projects
 	end
 
 	def show
@@ -44,6 +44,10 @@ class ProjectsController < ApplicationController
 	private 
 	def find_project
 		current_user.projects.find(params[:id])
+	end
+
+	def find_projects
+		current_user.projects.order('LOWER(title)').all
 	end
 
 	def project_params

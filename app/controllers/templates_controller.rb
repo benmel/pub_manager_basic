@@ -2,7 +2,7 @@ class TemplatesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @templates = current_user.templates
+    @templates = find_templates
   end
 
   def show
@@ -44,6 +44,10 @@ class TemplatesController < ApplicationController
   private
   def find_template
     current_user.templates.find(params[:id])
+  end
+
+  def find_templates
+    current_user.templates.order('LOWER(name)').all
   end
 
   def template_params

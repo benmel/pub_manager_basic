@@ -2,7 +2,7 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @books = current_user.books
+    @books = find_books
   end
 
   def show
@@ -76,6 +76,10 @@ class BooksController < ApplicationController
   private
   def find_book
     current_user.books.find(params[:id])
+  end
+
+  def find_books
+    current_user.books.joins(:project).order('LOWER(projects.title)').all
   end
 
   def find_project
