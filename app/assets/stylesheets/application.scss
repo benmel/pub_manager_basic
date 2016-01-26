@@ -14,7 +14,4 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
-.hidden-fields {
-	display: none;
-}
+@import "jquery-ui/sortable";

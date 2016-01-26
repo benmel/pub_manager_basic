@@ -1,25 +1,27 @@
 .row
-	.col-md-2
-		%b= label(:book, :front_section)
-	.col-md-10
+	.col-md-4
+		= label(:book, :front_section)
+	.col-md-8
 		- if @book.front_section
 			= link_to('Edit', edit_book_front_section_path(@book))
 		- else
 			= link_to('Create', new_book_front_section_path(@book))
 .row	
-	.col-md-2
-		%b= label(:book, :toc_section)
-	.col-md-10
+	.col-md-4
+		= label(:book, :toc_section)
+	.col-md-8
 		- if @book.toc_section
 			= link_to('Edit', edit_book_toc_section_path(@book))
 		- else
 			= link_to('Create', new_book_toc_section_path(@book))
-- @book.sections.each do |section|
-	.row	
-		.col-md-2
-			%b= label(:section, :name, section.name)
-		.col-md-10
-			= link_to('Edit', edit_book_section_path(@book, section))
+#sortable
+	- @book.sections.rank(:row_order).each do |section|
+		.row{ data: { url: book_section_path(@book, section) } }
+			.col-md-4
+				%span.glyphicon.glyphicon-menu-hamburger{ 'aria-hidden': 'true' } 
+				= label(:section, :name, section.name)
+			.col-md-8
+				= link_to('Edit', edit_book_section_path(@book, section))
 .row
 	.col-md-12
 		= link_to('Create Section', new_book_section_path(@book))	

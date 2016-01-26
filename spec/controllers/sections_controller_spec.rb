@@ -71,32 +71,48 @@ RSpec.describe SectionsController, type: :controller do
 
 	describe 'PATCH #update' do
 		context 'with valid attributes' do
-			before(:each) do
-				@section = build(:section)
-				patch :update, book_id: section_with_book.book, id: section_with_book, section: @section.attributes
-			end
+			let(:section) { build(:section) }
 			
-			it 'updates the section' do
-				expect(section_with_book.reload.content).to eq(@section.content)
+			context 'html format' do
+				before(:each) { patch :update, book_id: section_with_book.book, id: section_with_book, section: section.attributes }
+
+				it 'updates the section' do
+					expect(section_with_book.reload.content).to eq(section.content)
+				end
+
+				it 'redirects to #show the updated book' do
+					expect(response).to redirect_to(section_with_book.book)
+				end
 			end
 
-			it 'redirects to #show the updated book' do
-				expect(response).to redirect_to(section_with_book.book)
+			context 'json format' do
+				it 'returns ok status' do
+					patch :update, book_id: section_with_book.book, id: section_with_book, section: section.attributes, format: :json
+					expect(response).to have_http_status(:ok)
+				end
 			end
 		end
 
 		context 'with invalid attributes' do
-			before :each do
-				@section = build(:section, content: '')
-				patch :update, book_id: section_with_book.book, id: section_with_book, section: @section.attributes
+			let(:section) { build(:section, content: '') }
+
+			context 'html format' do
+				before(:each) { patch :update, book_id: section_with_book.book, id: section_with_book, section: section.attributes }
+
+				it 'does not update the section' do
+					expect(section_with_book.reload.content).to_not eq(section.content)
+				end
+
+				it 'renders the #edit template' do
+					expect(response).to render_template(:edit)
+				end
 			end
 
-			it 'does not update the section' do
-				expect(section_with_book.reload.content).to_not eq(@section.content)
-			end
-
-			it 'renders the #edit template' do
-				expect(response).to render_template(:edit)
+			context 'json format' do
+				it 'returns bad_request status' do
+					patch :update, book_id: section_with_book.book, id: section_with_book, section: section.attributes, format: :json
+					expect(response).to have_http_status(:bad_request)
+				end
 			end
 		end
 	end

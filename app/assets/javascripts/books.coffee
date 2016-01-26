@@ -21,11 +21,11 @@ getForm = (url, template_id, section_type, section) ->
 	if !!url and !!section_type and !!template_id and !!section
 		$.ajax 
 			url: url
+			method: 'GET'
+			dataType: 'html'
 			data:
 				template_id: template_id
 				section_type: section_type
-			type: 'GET'
-			dataType: 'html'
 			error: (jqXHR, textStatus, errorThrown) ->
 				console.log(textStatus)
 			success: (data, textStatus, jqXHR) ->
@@ -33,3 +33,18 @@ getForm = (url, template_id, section_type, section) ->
 
 replaceForm = (section, data)	->
 	section.replaceWith(data)
+
+$(document).on 'page:change', ->
+	$('#sortable').sortable
+		update: (evt, ui) ->
+			updateSectionRow(ui.item.data('url'), ui.item.index())
+
+updateSectionRow = (url, row_order_position) ->
+	if !!url and typeof row_order_position is 'number'
+		$.ajax
+			url: url
+			method: 'PATCH'
+			dataType: 'json'
+			data:
+				section:
+					row_order_position: row_order_position	 		

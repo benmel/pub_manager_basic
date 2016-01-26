@@ -6,5 +6,5 @@ class Section < ActiveRecord::Base
   validates :content, presence: true
 
   include RankedModel
-  ranks :row_order
+  ranks :row_order, with_same: :book_id
 end

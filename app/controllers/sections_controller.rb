@@ -25,9 +25,15 @@ class SectionsController < ApplicationController
 		@book = find_book
 		@section = find_section
 		if @section.update(section_params)
-			redirect_to @book
+			respond_to do |format|
+				format.html { redirect_to @book }
+				format.json { render json: { 'Result': 'Section updated successfully' }, status: :ok }
+			end
 		else
-			render :edit
+			respond_to do |format|
+				format.html { render :edit }
+				format.json { render json: { 'Result': 'Section failed to update' }, status: :bad_request }
+			end
 		end
 	end
 
@@ -48,6 +54,6 @@ class SectionsController < ApplicationController
 	end
 
 	def section_params
-		params.require(:section).permit(:name, :content, section_parameters_attributes: [:id, :name, :value, :_destroy])
+		params.require(:section).permit(:name, :content, :row_order_position, section_parameters_attributes: [:id, :name, :value, :_destroy])
 	end
 end
