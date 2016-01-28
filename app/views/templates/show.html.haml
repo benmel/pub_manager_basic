@@ -5,6 +5,11 @@
 		= @template.name
 .row
 	.col-md-2
+		%b= label(:template, :template_type, 'Type')
+	.col-md-10
+		= @template.template_type.humanize if @template.template_type
+.row
+	.col-md-2
 		%b= label(:template, :content)
 	.col-md-10	
 		= @template.content

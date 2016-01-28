@@ -3,11 +3,13 @@
 		%thead
 			%tr
 				%th Name
+				%th Type
 				%th
 		%tbody
 			- @templates.each do |template|
 				%tr
 					%td= template.name
+					%td= template.template_type.humanize if template.template_type
 					%td= link_to 'View', template_path(template)
 
 = link_to 'New Template', new_template_path, class: 'btn btn-default'

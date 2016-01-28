@@ -63,7 +63,12 @@ RSpec.describe TemplatesController, type: :controller do
 
   describe "POST #create" do
     context 'with valid attributes' do
-      before(:each) { post :create, template: attributes_for(:template) }
+      before(:each) do
+        template_with_type = build(:template, :valid_content)
+        # need to replace template_type with key, doesn't work with value
+        template_with_type_attributes = template_with_type.attributes.merge(template_type: template_with_type.template_type)
+        post :create, template: template_with_type_attributes
+      end
 
       it 'creates the template' do
         expect(Template.count).to eq(1)
@@ -76,8 +81,9 @@ RSpec.describe TemplatesController, type: :controller do
 
     context 'with invalid attributes' do
       before :each do
-        template_invalid = build(:template, :invalid_content)
-        post :create, template: template_invalid.attributes
+        template_invalid_with_type = build(:template, :invalid_content)
+        template_invalid_with_type_attributes = template_invalid_with_type.attributes.merge(template_type: template_invalid_with_type.template_type)
+        post :create, template: template_invalid_with_type_attributes
       end
 
       it 'does not create the template' do
@@ -92,7 +98,11 @@ RSpec.describe TemplatesController, type: :controller do
 
   describe "PATCH #update" do
     context 'with valid attributes' do
-      before(:each) { patch :update, id: template, template: attributes_for(:template, :valid_content) }
+      before(:each) do
+        template_with_type = build(:template, :valid_content)
+        template_with_type_attributes = template_with_type.attributes.merge(template_type: template_with_type.template_type)
+        patch :update, id: template, template: template_with_type_attributes
+      end
       
       it 'updates the template' do
         expect(template.reload.content).to eq('Hello {{ name }}')
@@ -105,12 +115,13 @@ RSpec.describe TemplatesController, type: :controller do
 
     context 'with invalid attributes' do
       before :each do
-        @template_invalid = build(:template, :invalid_content)
-        patch :update, id: template, template: @template_invalid.attributes
+        @template_invalid_with_type = build(:template, :invalid_content)
+        template_invalid_with_type_attributes = @template_invalid_with_type.attributes.merge(template_type: @template_invalid_with_type.template_type)
+        patch :update, id: template, template: template_invalid_with_type_attributes
       end
 
       it 'does not update the template' do
-        expect(template.reload.content).to_not eq(@template_invalid.content)
+        expect(template.reload.content).to_not eq(@template_invalid_with_type.content)
       end
 
       it 'renders the #edit template' do

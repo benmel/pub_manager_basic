@@ -10,10 +10,15 @@ RSpec.describe Template, type: :model do
   	it { should have_many(:template_parameters).inverse_of(:template).dependent(:destroy) }
   end
 
+  describe 'enum' do
+    it { should define_enum_for(:template_type).with([:other, :description, :front_section, :toc_section, :section]) }
+  end
+
   describe 'presence validations' do
     before { allow(subject).to receive(:no_liquid_template_errors) }
   	it { should validate_presence_of(:name) }
   	it { should validate_presence_of(:content) }
+    it { should validate_presence_of(:template_type) }
   end
 
   describe 'Liquid validation' do
