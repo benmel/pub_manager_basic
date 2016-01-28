@@ -2,6 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+$(document).on 'page:change', ->
+	initializeTinyMce()
+	initializeCocoon()
+	initalizeSortable()
+
 $(document).on 'change', '#choose_front_section_template', (evt) ->
 	prepareData $(this), $('#front-section')
 
@@ -11,6 +16,27 @@ $(document).on 'change', '#choose_toc_section_template', (evt) ->
 $(document).on 'change', '.choose_section_template', (evt) -> 
 	prepareData $(this), $(this).parent()     
 
+initializeTinyMce = ->
+	tinymce.remove()
+	bindTinyMce()
+
+initializeCocoon = ->
+	$('#sections').on 'cocoon:after-insert', (evt, section) ->
+		bindTinyMce()
+
+initalizeSortable = ->
+	$('#sortable').sortable
+		axis: 'y'
+		update: (evt, ui) ->
+			updateSectionRow ui.item.data('url'), ui.item.index()
+
+bindTinyMce = ->
+	tinymce.init
+		selector: '.tinymce'
+		plugins: 'paste code charmap visualblocks visualchars'
+		toolbar: 'undo redo | styleselect  | bold italic | bullist numlist | code charmap | visualblocks visualchars'
+		height: 300
+
 prepareData = (node, section) ->
 	url = node.data('url')
 	template_id = node.val()
@@ -18,7 +44,7 @@ prepareData = (node, section) ->
 	getForm url, template_id, section_type, section
 
 getForm = (url, template_id, section_type, section) ->
-	if !!url and !!section_type and !!template_id and !!section
+	if !!url and !!template_id and !!section_type and !!section
 		$.ajax 
 			url: url
 			method: 'GET'
@@ -33,11 +59,7 @@ getForm = (url, template_id, section_type, section) ->
 
 replaceForm = (section, data)	->
 	section.replaceWith(data)
-
-$(document).on 'page:change', ->
-	$('#sortable').sortable
-		update: (evt, ui) ->
-			updateSectionRow(ui.item.data('url'), ui.item.index())
+	bindTinyMce()
 
 updateSectionRow = (url, row_order_position) ->
 	if !!url and typeof row_order_position is 'number'
@@ -47,4 +69,4 @@ updateSectionRow = (url, row_order_position) ->
 			dataType: 'json'
 			data:
 				section:
-					row_order_position: row_order_position	 		
+					row_order_position: row_order_position

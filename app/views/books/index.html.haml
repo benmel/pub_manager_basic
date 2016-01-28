@@ -1,13 +1,14 @@
-%table.table
-	%thead
-		%tr
-			%th Project	
-			%th
-	%tbody
-		- @books.each do |book|
+.table-responsive
+	%table.table
+		%thead
 			%tr
-				- if book.project
-					%td= book.project.title
-				- else
-					%td	
-				%td= link_to 'View', book_path(book)
+				%th Project	
+				%th
+		%tbody
+			- @books.each do |book|
+				%tr
+					- if book.project
+						%td= book.project.title
+					- else
+						%td	
+					%td= link_to 'View', book_path(book)
