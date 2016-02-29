@@ -1,10 +1,10 @@
 = simple_form_for @book, url: project_book_path do |f|
 	= f.full_error :base
 	%h4 Front Section
-	= select_tag 'choose_front_section_template', options_from_collection_for_select(@templates, 'id', 'name'), prompt: 'Choose a front section template', class: 'form-control', data: { url: form_project_book_path, section_type: 'front_section' }
+	= select_tag 'choose_front_section_template', options_from_collection_for_select(@front_templates, 'id', 'name'), prompt: 'Choose a front section template', class: 'form-control', data: { url: form_project_book_path, section_type: 'front_section' }
 	= render 'front_section', f: f
 	%h4 Table of Contents Section
-	= select_tag 'choose_toc_section_template', options_from_collection_for_select(@templates, 'id', 'name'), prompt: 'Choose a TOC section template', class: 'form-control', data: { url: form_project_book_path, section_type: 'toc_section' }
+	= select_tag 'choose_toc_section_template', options_from_collection_for_select(@toc_templates, 'id', 'name'), prompt: 'Choose a TOC section template', class: 'form-control', data: { url: form_project_book_path, section_type: 'toc_section' }
 	= render 'toc_section', f: f
 	%h4 Content Sections
 	= render 'sections', f: f

@@ -80,11 +80,11 @@ class DescriptionsController < ApplicationController
 	end
 
 	def find_template
-		current_user.templates.find(params[:template_id])
+		current_user.templates.description.find(params[:template_id])
 	end
 
 	def find_templates
-		current_user.templates.order('LOWER(name)').all
+		current_user.templates.description.order('LOWER(name)').all
 	end
 
 	def description_params

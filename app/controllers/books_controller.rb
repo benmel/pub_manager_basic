@@ -18,7 +18,7 @@ class BooksController < ApplicationController
       @book.build_front_section
       @book.build_toc_section
       @book.sections.build
-      @templates = find_templates
+      set_templates
     end
   end
 
@@ -28,7 +28,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to @book
     else
-      @templates = find_templates
+      set_templates
       render :new
     end
   end
@@ -42,17 +42,18 @@ class BooksController < ApplicationController
 
   def form
     @project = find_project
-    @templates = find_templates
     if Book.exists? project_id: @project
+      set_templates
       @book = @project.book
       render partial: 'form'
     else
       @book = Book.new
       unless params[:template_id].present?
+        set_templates
         render partial: 'form'
       else  
         @template = find_template
-        case params[:section_type]
+        case @template.template_type
         when 'front_section'
           @book.build_front_section
           @book.set_front_section_content_and_section_parameters_from @template
@@ -64,10 +65,11 @@ class BooksController < ApplicationController
         when 'section'
           @book.sections.build
           @book.set_first_section_content_and_section_parameters_from @template
+          @content_templates = find_templates(:section)
           render partial: 'wrapper_sections'
         else
           # need both a template_id and section_type to create form
-          render text: 'Missing section_type', status: :bad_request
+          render text: 'Incorrect section_type', status: :bad_request
         end
       end
     end
@@ -87,11 +89,17 @@ class BooksController < ApplicationController
   end
 
   def find_template
-    current_user.templates.find(params[:template_id])
+    current_user.templates.send(params[:section_type]).find(params[:template_id])
   end
 
-  def find_templates
-    current_user.templates.order('LOWER(name)').all
+  def find_templates(type)
+    current_user.templates.send(type).order('LOWER(name)').all
+  end
+
+  def set_templates
+    @front_templates = find_templates(:front_section)
+    @toc_templates = find_templates(:toc_section)
+    @content_templates = find_templates(:section)
   end
 
   def book_params

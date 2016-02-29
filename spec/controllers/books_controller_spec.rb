@@ -5,6 +5,9 @@ RSpec.describe BooksController, type: :controller do
 
   before(:each) do
     @user ||= create(:user_with_projects)
+    @front_template ||= create(:template, template_type: :front_section, user: @user)
+    @toc_template ||= create(:template, template_type: :toc_section, user: @user)
+    @content_template ||= create(:template, template_type: :section, user: @user)
     sign_in @user
   end
 
@@ -49,10 +52,7 @@ RSpec.describe BooksController, type: :controller do
     end
 
     context 'book does not exist' do
-      before(:each) do
-        @template = create(:template, user: @user)
-        get :new, project_id: project_without_book
-      end
+      before(:each) { get :new, project_id: project_without_book }
 
       it 'assigns a new @book' do
         expect(assigns(:book)).to be_a_new(Book)
@@ -70,8 +70,10 @@ RSpec.describe BooksController, type: :controller do
         expect(assigns(:book).sections.first).to_not be_nil
       end
 
-      it 'assigns @templates' do
-        expect(assigns(:templates)).to eq([@template])
+      it 'assigns @front_templates, @toc_templates and @content_templates' do
+        expect(assigns(:front_templates)).to eq([@front_template])
+        expect(assigns(:toc_templates)).to eq([@toc_template])
+        expect(assigns(:content_templates)).to eq([@content_template])
       end
 
       it 'renders the #new template' do
@@ -98,7 +100,6 @@ RSpec.describe BooksController, type: :controller do
     context 'with invalid attributes' do
       before :each do
         allow_any_instance_of(Book).to receive(:save).and_return(false)
-        @template = create(:template, user: @user)
         post :create, project_id: project_without_book, book: build(:book).attributes
       end
 
@@ -106,8 +107,10 @@ RSpec.describe BooksController, type: :controller do
         expect(Book.count).to eq(0)
       end
 
-      it 'assigns @templates' do
-        expect(assigns(:templates)).to eq([@template])
+      it 'assigns @front_templates, @toc_templates and @content_templates' do
+        expect(assigns(:front_templates)).to eq([@front_template])
+        expect(assigns(:toc_templates)).to eq([@toc_template])
+        expect(assigns(:content_templates)).to eq([@content_template])
       end
 
       it 'renders the #new template' do
@@ -134,14 +137,14 @@ RSpec.describe BooksController, type: :controller do
       expect(assigns(:project)).to eq(book_with_project.project)
     end
 
-    it 'assigns @templates' do
-      template = create(:template, user: @user)
-      get :form, project_id: book_with_project.project
-      expect(assigns(:templates)).to eq([template])
-    end
-
     context 'book exists' do
       before(:each) { get :form, project_id: book_with_project.project }
+  
+      it 'assigns @front_templates, @toc_templates and @content_templates' do
+        expect(assigns(:front_templates)).to eq([@front_template])
+        expect(assigns(:toc_templates)).to eq([@toc_template])
+        expect(assigns(:content_templates)).to eq([@content_template])
+      end
 
       it 'assigns @book' do
         expect(assigns(:book)).to eq(book_with_project)
@@ -159,77 +162,106 @@ RSpec.describe BooksController, type: :controller do
       end
 
       context 'does not include template_id param' do
+        before(:each) { get :form, project_id: project_without_book }
+
+        it 'assigns @front_templates, @toc_templates and @content_templates' do
+          expect(assigns(:front_templates)).to eq([@front_template])
+          expect(assigns(:toc_templates)).to eq([@toc_template])
+          expect(assigns(:content_templates)).to eq([@content_template])
+        end
+
         it 'renders the form partial' do
-          get :form, project_id: project_without_book          
           expect(response).to render_template(partial: '_form')
         end
       end
 
       context 'includes template_id param' do
-        let(:template) { create(:template, user: @user) }
-
-        it 'assigns @template' do
-          get :form, project_id: project_without_book, template_id: template
-          expect(assigns(:template)).to eq(template)
-        end
-
-        context 'section_type param' do
-          context 'is front_section' do
-            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'front_section' }
-
-            it 'builds the front section' do
-              expect(assigns(:book).front_section).to_not be_nil
-            end
-
-            it 'sets the front section content and section parameters' do
-              expect(assigns(:book).front_section.content).to eq(template.content)
-            end
-
-            it 'renders the wrapper_front partial' do
-              expect(response).to render_template(partial: '_wrapper_front')
-            end
+        context 'template does not exist' do
+          it 'raises an error for wrong id' do
+            expect { get :form, project_id: project_without_book, template_id: 'nil', section_type: 'front_section' }.to raise_error(ActiveRecord::RecordNotFound)
           end
 
-          context 'is toc_section' do
-            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'toc_section' }
-
-            it 'builds the toc section' do
-              expect(assigns(:book).toc_section).to_not be_nil
-            end
-
-            it 'sets the toc section content and section parameters' do
-              expect(assigns(:book).toc_section.content).to eq(template.content)
-            end
-
-            it 'renders the wrapper_toc partial' do
-              expect(response).to render_template(partial: '_wrapper_toc')
-            end
+          it 'raises an error for wrong section type' do
+            expect { get :form, project_id: project_without_book, template_id: @front_template, section_type: 'toc_section' }.to raise_error(ActiveRecord::RecordNotFound)
           end
 
-          context 'is section' do
-            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: 'section' }
-
-            it 'builds a section' do
-              expect(assigns(:book).sections.first).to_not be_nil
-            end
-
-            it 'sets the section content and section parameters' do
-              expect(assigns(:book).sections.first.content).to eq(template.content)
-            end
-
-            it 'renders the wrapper_sections partial' do
-              expect(response).to render_template(partial: '_wrapper_sections')              
-            end
-          end
-
-          context 'does not exist' do
-            before(:each) { get :form, project_id: project_without_book, template_id: template, section_type: '' }
-
-            it 'should render bad_request' do
-              expect(response.status).to eq(400)
-            end
+          it 'raises an error for invalid section type' do
+            expect { get :form, project_id: project_without_book, template_id: @front_template, section_type: 'fake_section' }.to raise_error(NoMethodError) 
           end
         end
+
+        context 'template exists' do
+          it 'assigns @template' do
+            get :form, project_id: project_without_book, template_id: @front_template, section_type: 'front_section'
+            expect(assigns(:template)).to eq(@front_template)
+          end
+
+          context 'section_type param' do
+            context 'is front_section' do
+              before(:each) { get :form, project_id: project_without_book, template_id: @front_template, section_type: 'front_section' }
+
+              it 'builds the front section' do
+                expect(assigns(:book).front_section).to_not be_nil
+              end
+
+              it 'sets the front section content and section parameters' do
+                expect(assigns(:book).front_section.content).to eq(@front_template.content)
+              end
+
+              it 'renders the wrapper_front partial' do
+                expect(response).to render_template(partial: '_wrapper_front')
+              end
+            end
+
+            context 'is toc_section' do
+              before(:each) { get :form, project_id: project_without_book, template_id: @toc_template, section_type: 'toc_section' }
+
+              it 'builds the toc section' do
+                expect(assigns(:book).toc_section).to_not be_nil
+              end
+
+              it 'sets the toc section content and section parameters' do
+                expect(assigns(:book).toc_section.content).to eq(@toc_template.content)
+              end
+
+              it 'renders the wrapper_toc partial' do
+                expect(response).to render_template(partial: '_wrapper_toc')
+              end
+            end
+
+            context 'is section' do
+              before(:each) { get :form, project_id: project_without_book, template_id: @content_template, section_type: 'section' }
+
+              it 'builds a section' do
+                expect(assigns(:book).sections.first).to_not be_nil
+              end
+
+              it 'sets the section content and section parameters' do
+                expect(assigns(:book).sections.first.content).to eq(@content_template.content)
+              end
+
+              it 'assigns @content_templates' do
+                expect(assigns(:content_templates)).to eq([@content_template])
+              end
+
+              it 'renders the wrapper_sections partial' do
+                expect(response).to render_template(partial: '_wrapper_sections')              
+              end
+            end
+
+            context 'is something else' do
+              before(:each) do
+                other_template = create(:template, template_type: :other, user: @user)
+                get :form, project_id: project_without_book, template_id: other_template, section_type: 'other'
+              end
+
+              it 'renders bad_request' do
+                expect(response.status).to eq(400)
+              end
+            end
+          end
+        end
+
       end
     end
   end

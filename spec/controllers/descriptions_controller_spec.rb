@@ -47,7 +47,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		
 		context 'description does not exist' do
 			before(:each) do
-				@template = create(:template, user: @user)
+				@template = create(:template, template_type: :description, user: @user)
 				get :new, project_id: project_without_description
 			end
 
@@ -102,7 +102,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@template = create(:template, user: @user)
+				@template = create(:template, template_type: :description, user: @user)
 				description = build(:description, :invalid_template)
 				post :create, project_id: project_without_description, description: description.attributes
 			end
@@ -220,7 +220,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		context 'description does not exist' do
 			context 'includes template_id param' do
 				before(:each) do
-					@template = create(:template, user: @user)
+					@template = create(:template, template_type: :description, user: @user)
 					get :form, project_id: project_without_description, template_id: @template
 				end
 
