@@ -53,8 +53,8 @@ class Description < ActiveRecord::Base
   	@description_parameters_hash ||= self.description_parameters.pluck(:name, :value).to_h
   end
 
-  def set_template_and_description_parameters_from(template)
-    self.template = template.content
-    template.template_parameters.each { |template_parameter| self.description_parameters.build(name: template_parameter.name) }
+  def set_template_and_description_parameters_from(liquid_template)
+    self.template = liquid_template.content
+    liquid_template.liquid_template_parameters.each { |liquid_template_parameter| self.description_parameters.build(name: liquid_template_parameter.name) }
   end
 end

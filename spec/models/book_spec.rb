@@ -21,50 +21,50 @@ RSpec.describe Book, type: :model do
   end
 
   describe 'section setters' do
-    let(:template) { create(:template) }
+    let(:liquid_template) { create(:liquid_template) }
 
-    describe 'set_front_section_content_and_section_parameters_from(template)' do
+    describe 'set_front_section_content_and_section_parameters_from(liquid_template)' do
       before(:each) { book.build_front_section }
 
       it 'should set the front_section content' do
-        book.set_front_section_content_and_section_parameters_from(template)
-        expect(book.front_section.content).to eq(template.content)
+        book.set_front_section_content_and_section_parameters_from(liquid_template)
+        expect(book.front_section.content).to eq(liquid_template.content)
       end
 
       it 'should set the front_section section_parameters' do
-        template_parameter = create(:template_parameter, template: template)
-        book.set_front_section_content_and_section_parameters_from(template)
-        expect(book.front_section.section_parameters.first.name).to eq(template_parameter.name)
+        liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
+        book.set_front_section_content_and_section_parameters_from(liquid_template)
+        expect(book.front_section.section_parameters.first.name).to eq(liquid_template_parameter.name)
       end
     end
 
-    describe 'set_toc_section_content_and_section_parameters_from(template)' do
+    describe 'set_toc_section_content_and_section_parameters_from(liquid_template)' do
       before(:each) { book.build_toc_section }
 
       it 'should set the toc_section content' do
-        book.set_toc_section_content_and_section_parameters_from(template)
-        expect(book.toc_section.content).to eq(template.content)
+        book.set_toc_section_content_and_section_parameters_from(liquid_template)
+        expect(book.toc_section.content).to eq(liquid_template.content)
       end
 
       it 'should set the toc_section section_parameters' do
-        template_parameter = create(:template_parameter, template: template)
-        book.set_toc_section_content_and_section_parameters_from(template)
-        expect(book.toc_section.section_parameters.first.name).to eq(template_parameter.name)
+        liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
+        book.set_toc_section_content_and_section_parameters_from(liquid_template)
+        expect(book.toc_section.section_parameters.first.name).to eq(liquid_template_parameter.name)
       end
     end
 
-    describe 'set_first_section_content_and_section_parameters_from(template)' do
+    describe 'set_first_section_content_and_section_parameters_from(liquid_template)' do
       before(:each) { book.sections.build }
 
       it 'should set the first section content' do
-        book.set_first_section_content_and_section_parameters_from(template)
-        expect(book.sections.first.content).to eq(template.content)
+        book.set_first_section_content_and_section_parameters_from(liquid_template)
+        expect(book.sections.first.content).to eq(liquid_template.content)
       end
 
       it 'should set the first section section_parameters' do
-        template_parameter = create(:template_parameter, template: template)
-        book.set_first_section_content_and_section_parameters_from(template)
-        expect(book.sections.first.section_parameters.first.name).to eq(template_parameter.name)
+        liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
+        book.set_first_section_content_and_section_parameters_from(liquid_template)
+        expect(book.sections.first.section_parameters.first.name).to eq(liquid_template_parameter.name)
       end
     end
   end

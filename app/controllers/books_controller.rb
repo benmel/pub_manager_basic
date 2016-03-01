@@ -18,7 +18,7 @@ class BooksController < ApplicationController
       @book.build_front_section
       @book.build_toc_section
       @book.sections.build
-      set_templates
+      set_liquid_templates
     end
   end
 
@@ -28,7 +28,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to @book
     else
-      set_templates
+      set_liquid_templates
       render :new
     end
   end
@@ -43,32 +43,32 @@ class BooksController < ApplicationController
   def form
     @project = find_project
     if Book.exists? project_id: @project
-      set_templates
+      set_liquid_templates
       @book = @project.book
       render partial: 'form'
     else
       @book = Book.new
-      unless params[:template_id].present?
-        set_templates
+      unless params[:liquid_template_id].present?
+        set_liquid_templates
         render partial: 'form'
       else  
-        @template = find_template
-        case @template.template_type
+        @liquid_template = find_liquid_template
+        case @liquid_template.template_type
         when 'front_section'
           @book.build_front_section
-          @book.set_front_section_content_and_section_parameters_from @template
+          @book.set_front_section_content_and_section_parameters_from @liquid_template
           render partial: 'wrapper_front'
         when 'toc_section'
           @book.build_toc_section
-          @book.set_toc_section_content_and_section_parameters_from @template
+          @book.set_toc_section_content_and_section_parameters_from @liquid_template
           render partial: 'wrapper_toc'
         when 'section'
           @book.sections.build
-          @book.set_first_section_content_and_section_parameters_from @template
-          @content_templates = find_templates(:section)
+          @book.set_first_section_content_and_section_parameters_from @liquid_template
+          @content_liquid_templates = find_liquid_templates(:section)
           render partial: 'wrapper_sections'
         else
-          # need both a template_id and section_type to create form
+          # need both a liquid_template_id and section_type to create form
           render text: 'Incorrect section_type', status: :bad_request
         end
       end
@@ -88,18 +88,18 @@ class BooksController < ApplicationController
     current_user.projects.find(params[:project_id])
   end
 
-  def find_template
-    current_user.templates.send(params[:section_type]).find(params[:template_id])
+  def find_liquid_template
+    current_user.liquid_templates.send(params[:section_type]).find(params[:liquid_template_id])
   end
 
-  def find_templates(type)
-    current_user.templates.send(type).order('LOWER(name)').all
+  def find_liquid_templates(type)
+    current_user.liquid_templates.send(type).order('LOWER(name)').all
   end
 
-  def set_templates
-    @front_templates = find_templates(:front_section)
-    @toc_templates = find_templates(:toc_section)
-    @content_templates = find_templates(:section)
+  def set_liquid_templates
+    @front_liquid_templates = find_liquid_templates(:front_section)
+    @toc_liquid_templates = find_liquid_templates(:toc_section)
+    @content_liquid_templates = find_liquid_templates(:section)
   end
 
   def book_params

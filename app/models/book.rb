@@ -8,18 +8,18 @@ class Book < ActiveRecord::Base
   accepts_nested_attributes_for :toc_section
   accepts_nested_attributes_for :sections, reject_if: :all_blank
 
-  def set_front_section_content_and_section_parameters_from(template)
-  	self.front_section.content = template.content
-    template.template_parameters.each { |template_parameter| self.front_section.section_parameters.build(name: template_parameter.name) }
+  def set_front_section_content_and_section_parameters_from(liquid_template)
+  	self.front_section.content = liquid_template.content
+    liquid_template.liquid_template_parameters.each { |liquid_template_parameter| self.front_section.section_parameters.build(name: liquid_template_parameter.name) }
   end
 
-  def set_toc_section_content_and_section_parameters_from(template)
-  	self.toc_section.content = template.content
-    template.template_parameters.each { |template_parameter| self.toc_section.section_parameters.build(name: template_parameter.name) }
+  def set_toc_section_content_and_section_parameters_from(liquid_template)
+  	self.toc_section.content = liquid_template.content
+    liquid_template.liquid_template_parameters.each { |liquid_template_parameter| self.toc_section.section_parameters.build(name: liquid_template_parameter.name) }
   end
 
-  def set_first_section_content_and_section_parameters_from(template)
-  	self.sections.first.content = template.content
-    template.template_parameters.each { |template_parameter| self.sections.first.section_parameters.build(name: template_parameter.name) }
+  def set_first_section_content_and_section_parameters_from(liquid_template)
+  	self.sections.first.content = liquid_template.content
+    liquid_template.liquid_template_parameters.each { |liquid_template_parameter| self.sections.first.section_parameters.build(name: liquid_template_parameter.name) }
   end
 end

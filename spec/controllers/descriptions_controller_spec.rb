@@ -47,7 +47,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		
 		context 'description does not exist' do
 			before(:each) do
-				@template = create(:template, template_type: :description, user: @user)
+				@liquid_template = create(:liquid_template, template_type: :description, user: @user)
 				get :new, project_id: project_without_description
 			end
 
@@ -55,8 +55,8 @@ RSpec.describe DescriptionsController, type: :controller do
 				expect(assigns(:description)).to be_a_new(Description)
 			end
 
-			it 'assigns @templates' do
-				expect(assigns(:templates)).to eq([@template])
+			it 'assigns @liquid_templates' do
+				expect(assigns(:liquid_templates)).to eq([@liquid_template])
 			end
 
 			it 'renders the #new template' do
@@ -102,7 +102,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@template = create(:template, template_type: :description, user: @user)
+				@liquid_template = create(:liquid_template, template_type: :description, user: @user)
 				description = build(:description, :invalid_template)
 				post :create, project_id: project_without_description, description: description.attributes
 			end
@@ -111,8 +111,8 @@ RSpec.describe DescriptionsController, type: :controller do
 				expect(Description.count).to eq(0)
 			end
 
-			it 'assigns @templates' do
-				expect(assigns(:templates)).to eq([@template])
+			it 'assigns @liquid_templates' do
+				expect(assigns(:liquid_templates)).to eq([@liquid_template])
 			end
 
 			it 'renders the #new template' do
@@ -218,10 +218,10 @@ RSpec.describe DescriptionsController, type: :controller do
 		end
 
 		context 'description does not exist' do
-			context 'includes template_id param' do
+			context 'includes liquid_template_id param' do
 				before(:each) do
-					@template = create(:template, template_type: :description, user: @user)
-					get :form, project_id: project_without_description, template_id: @template
+					@liquid_template = create(:liquid_template, template_type: :description, user: @user)
+					get :form, project_id: project_without_description, liquid_template_id: @liquid_template
 				end
 
 				it_should_behave_like 'common_get_form'
@@ -231,11 +231,11 @@ RSpec.describe DescriptionsController, type: :controller do
 				end
 
 				it 'sets the description template and description parameters' do
-					expect(assigns(:description).template).to eq(@template.content)
+					expect(assigns(:description).template).to eq(@liquid_template.content)
 				end	
 			end
 
-			context 'does not include template_id param' do
+			context 'does not include liquid_template_id param' do
 				before(:each) { get :form, project_id: project_without_description }
 
 				it_should_behave_like 'common_get_form'

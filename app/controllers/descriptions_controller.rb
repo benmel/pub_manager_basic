@@ -13,7 +13,7 @@ class DescriptionsController < ApplicationController
 			redirect_to edit_project_description_path
 		else
 			@description = Description.new
-			@templates = find_templates
+			@liquid_templates = find_liquid_templates
 		end
 	end
 
@@ -29,7 +29,7 @@ class DescriptionsController < ApplicationController
 		if @description.save
 			redirect_to @project
 		else
-			@templates = find_templates
+			@liquid_templates = find_liquid_templates
 			render :new
 		end
 	end
@@ -65,10 +65,10 @@ class DescriptionsController < ApplicationController
 			@description = @project.description
 		else
 			@description = Description.new
-			# only render form with filled in template if template_id is present
-			if params[:template_id].present?
-				template = find_template
-				@description.set_template_and_description_parameters_from template
+			# only render form with filled in template if liquid_template_id is present
+			if params[:liquid_template_id].present?
+				liquid_template = find_liquid_template
+				@description.set_template_and_description_parameters_from liquid_template
 			end
 		end
 		render partial: 'form'
@@ -79,12 +79,12 @@ class DescriptionsController < ApplicationController
 		current_user.projects.find(params[:project_id])
 	end
 
-	def find_template
-		current_user.templates.description.find(params[:template_id])
+	def find_liquid_template
+		current_user.liquid_templates.description.find(params[:liquid_template_id])
 	end
 
-	def find_templates
-		current_user.templates.description.order('LOWER(name)').all
+	def find_liquid_templates
+		current_user.liquid_templates.description.order('LOWER(name)').all
 	end
 
 	def description_params

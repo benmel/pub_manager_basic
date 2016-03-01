@@ -118,18 +118,18 @@ RSpec.describe Description, type: :model do
     end
   end
 
-  describe 'set_template_and_description_parameters_from(template)' do
-    let(:template) { create(:template) }
+  describe 'set_template_and_description_parameters_from(liquid_template)' do
+    let(:liquid_template) { create(:liquid_template) }
 
     it 'should set the template' do
-      description.set_template_and_description_parameters_from(template)
-      expect(description.template).to eq(template.content)
+      description.set_template_and_description_parameters_from(liquid_template)
+      expect(description.template).to eq(liquid_template.content)
     end
 
     it 'should set the description parameters' do
-      template_parameter = create(:template_parameter, template: template)
-      description.set_template_and_description_parameters_from(template)
-      expect(description.description_parameters.first.name).to eq(template_parameter.name)
+      liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
+      description.set_template_and_description_parameters_from(liquid_template)
+      expect(description.description_parameters.first.name).to eq(liquid_template_parameter.name)
     end
   end
 end

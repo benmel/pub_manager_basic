@@ -75,6 +75,6 @@ Rails.application.routes.draw do
     resources :sections, except: [:index, :show]
   end
 
-  resources :templates
+  resources :liquid_templates
 
 end
