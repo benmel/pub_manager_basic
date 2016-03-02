@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301231437) do
+ActiveRecord::Schema.define(version: 20160302044751) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,26 @@ ActiveRecord::Schema.define(version: 20160301231437) do
   end
 
   add_index "descriptions", ["project_id"], name: "index_descriptions_on_project_id", using: :btree
+
+  create_table "filled_liquid_template_parameters", force: :cascade do |t|
+    t.integer  "filled_liquid_template_id"
+    t.text     "name"
+    t.text     "value"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "filled_liquid_template_parameters", ["filled_liquid_template_id"], name: "index_fl_template_parameters_on_fl_template_id", using: :btree
+
+  create_table "filled_liquid_templates", force: :cascade do |t|
+    t.integer  "filled_liquid_templatable_id"
+    t.string   "filled_liquid_templatable_type"
+    t.text     "content"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "filled_liquid_templates", ["filled_liquid_templatable_type", "filled_liquid_templatable_id"], name: "index_fl_templates_on_fl_templatable_type_and_fl_templatable_id", using: :btree
 
   create_table "front_sections", force: :cascade do |t|
     t.integer  "book_id"
@@ -156,6 +176,7 @@ ActiveRecord::Schema.define(version: 20160301231437) do
   add_foreign_key "covers", "projects"
   add_foreign_key "description_parameters", "descriptions"
   add_foreign_key "descriptions", "projects"
+  add_foreign_key "filled_liquid_template_parameters", "filled_liquid_templates"
   add_foreign_key "front_sections", "books"
   add_foreign_key "liquid_template_parameters", "liquid_templates"
   add_foreign_key "liquid_templates", "users"
