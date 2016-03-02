@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :section do
+  factory :body_section do
     book
     name Faker::Lorem.word
 		content Faker::Lorem.paragraph

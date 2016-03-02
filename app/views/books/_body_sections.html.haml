@@ -1,0 +1,7 @@
+#body-sections
+	= f.simple_fields_for :body_sections do |body_section|
+		= render 'body_section', f: body_section
+	.links
+		%br	
+		= link_to_add_association 'Add Section', f, :body_sections, partial: 'body_section', class: 'btn btn-default'
+	%br	

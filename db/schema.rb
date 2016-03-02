@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301204822) do
+ActiveRecord::Schema.define(version: 20160301231437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "body_sections", force: :cascade do |t|
+    t.integer  "book_id"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text     "name"
+    t.integer  "row_order"
+  end
+
+  add_index "body_sections", ["book_id"], name: "index_body_sections_on_book_id", using: :btree
 
   create_table "books", force: :cascade do |t|
     t.integer  "project_id"
@@ -100,7 +111,7 @@ ActiveRecord::Schema.define(version: 20160301204822) do
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "section_parameters", force: :cascade do |t|
-    t.integer  "section_id"
+    t.integer  "body_section_id"
     t.text     "name"
     t.text     "value"
     t.datetime "created_at",       null: false
@@ -109,20 +120,9 @@ ActiveRecord::Schema.define(version: 20160301204822) do
     t.integer  "toc_section_id"
   end
 
+  add_index "section_parameters", ["body_section_id"], name: "index_section_parameters_on_body_section_id", using: :btree
   add_index "section_parameters", ["front_section_id"], name: "index_section_parameters_on_front_section_id", using: :btree
-  add_index "section_parameters", ["section_id"], name: "index_section_parameters_on_section_id", using: :btree
   add_index "section_parameters", ["toc_section_id"], name: "index_section_parameters_on_toc_section_id", using: :btree
-
-  create_table "sections", force: :cascade do |t|
-    t.integer  "book_id"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text     "name"
-    t.integer  "row_order"
-  end
-
-  add_index "sections", ["book_id"], name: "index_sections_on_book_id", using: :btree
 
   create_table "toc_sections", force: :cascade do |t|
     t.integer  "book_id"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20160301204822) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "body_sections", "books"
   add_foreign_key "books", "projects"
   add_foreign_key "covers", "projects"
   add_foreign_key "description_parameters", "descriptions"
@@ -159,9 +160,8 @@ ActiveRecord::Schema.define(version: 20160301204822) do
   add_foreign_key "liquid_template_parameters", "liquid_templates"
   add_foreign_key "liquid_templates", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "section_parameters", "body_sections"
   add_foreign_key "section_parameters", "front_sections"
-  add_foreign_key "section_parameters", "sections"
   add_foreign_key "section_parameters", "toc_sections"
-  add_foreign_key "sections", "books"
   add_foreign_key "toc_sections", "books"
 end

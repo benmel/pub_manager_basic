@@ -11,7 +11,7 @@ RSpec.describe LiquidTemplate, type: :model do
   end
 
   describe 'enum' do
-    it { should define_enum_for(:template_type).with([:other, :description, :front_section, :toc_section, :section]) }
+    it { should define_enum_for(:template_type).with([:other, :description, :front_section, :toc_section, :body_section]) }
   end
 
   describe 'presence validations' do

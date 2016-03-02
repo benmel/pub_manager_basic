@@ -1,6 +1,0 @@
-.nested-fields
-	= select_tag 'choose_section_liquid_template', options_from_collection_for_select(@content_liquid_templates, 'id', 'name'), prompt: 'Choose a section liquid template', id: nil, class: 'choose_section_liquid_template form-control', data: { url: form_project_book_path, section_type: 'section' }
-	= render 'sections/fields', f: f
-	%br
-	= link_to_remove_association "Remove Section", f, class: 'btn btn-default'
-	

@@ -1,0 +1,6 @@
+.nested-fields
+	= select_tag 'choose_body_section_liquid_template', options_from_collection_for_select(@body_liquid_templates, 'id', 'name'), prompt: 'Choose a body section liquid template', id: nil, class: 'choose_body_section_liquid_template form-control', data: { url: form_project_book_path, section_type: 'body_section' }
+	= render 'body_sections/fields', f: f
+	%br
+	= link_to_remove_association "Remove Section", f, class: 'btn btn-default'
+	

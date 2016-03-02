@@ -1,7 +1,0 @@
-#sections
-	= f.simple_fields_for :sections do |section|
-		= render 'section', f: section
-	.links
-		%br	
-		= link_to_add_association 'Add Section', f, :sections, partial: 'section', class: 'btn btn-default'
-	%br	

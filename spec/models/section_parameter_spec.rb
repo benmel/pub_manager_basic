@@ -6,7 +6,7 @@ RSpec.describe SectionParameter, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:section).inverse_of(:section_parameters) }
+  	it { should belong_to(:body_section).inverse_of(:section_parameters) }
   	it { should belong_to(:front_section).inverse_of(:section_parameters) }
   	it { should belong_to(:toc_section).inverse_of(:section_parameters) }
   end

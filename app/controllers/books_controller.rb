@@ -17,7 +17,7 @@ class BooksController < ApplicationController
       @book = Book.new
       @book.build_front_section
       @book.build_toc_section
-      @book.sections.build
+      @book.body_sections.build
       set_liquid_templates
     end
   end
@@ -62,11 +62,11 @@ class BooksController < ApplicationController
           @book.build_toc_section
           @book.set_toc_section_content_and_section_parameters_from @liquid_template
           render partial: 'wrapper_toc'
-        when 'section'
-          @book.sections.build
-          @book.set_first_section_content_and_section_parameters_from @liquid_template
-          @content_liquid_templates = find_liquid_templates(:section)
-          render partial: 'wrapper_sections'
+        when 'body_section'
+          @book.body_sections.build
+          @book.set_first_body_section_content_and_section_parameters_from @liquid_template
+          @body_liquid_templates = find_liquid_templates(:body_section)
+          render partial: 'wrapper_body'
         else
           # need both a liquid_template_id and section_type to create form
           render text: 'Incorrect section_type', status: :bad_request
@@ -99,13 +99,13 @@ class BooksController < ApplicationController
   def set_liquid_templates
     @front_liquid_templates = find_liquid_templates(:front_section)
     @toc_liquid_templates = find_liquid_templates(:toc_section)
-    @content_liquid_templates = find_liquid_templates(:section)
+    @body_liquid_templates = find_liquid_templates(:body_section)
   end
 
   def book_params
     params.require(:book).permit(
       front_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
       toc_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
-      sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
+      body_sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
   end
 end

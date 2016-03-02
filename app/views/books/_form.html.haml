@@ -6,6 +6,6 @@
 	%h4 Table of Contents Section
 	= select_tag 'choose_toc_section_liquid_template', options_from_collection_for_select(@toc_liquid_templates, 'id', 'name'), prompt: 'Choose a TOC section liquid template', class: 'form-control', data: { url: form_project_book_path, section_type: 'toc_section' }
 	= render 'toc_section', f: f
-	%h4 Content Sections
-	= render 'sections', f: f
+	%h4 Body Sections
+	= render 'body_sections', f: f
 	= f.button :submit

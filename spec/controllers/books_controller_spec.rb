@@ -7,7 +7,7 @@ RSpec.describe BooksController, type: :controller do
     @user ||= create(:user_with_projects)
     @front_liquid_template ||= create(:liquid_template, template_type: :front_section, user: @user)
     @toc_liquid_template ||= create(:liquid_template, template_type: :toc_section, user: @user)
-    @content_liquid_template ||= create(:liquid_template, template_type: :section, user: @user)
+    @body_liquid_template ||= create(:liquid_template, template_type: :body_section, user: @user)
     sign_in @user
   end
 
@@ -66,14 +66,14 @@ RSpec.describe BooksController, type: :controller do
         expect(assigns(:book).toc_section).to_not be_nil
       end
 
-      it 'builds a section' do
-        expect(assigns(:book).sections.first).to_not be_nil
+      it 'builds a body section' do
+        expect(assigns(:book).body_sections.first).to_not be_nil
       end
 
-      it 'assigns @front_liquid_templates, @toc_liquid_templates and @content_liquid_templates' do
+      it 'assigns @front_liquid_templates, @toc_liquid_templates and @body_liquid_templates' do
         expect(assigns(:front_liquid_templates)).to eq([@front_liquid_template])
         expect(assigns(:toc_liquid_templates)).to eq([@toc_liquid_template])
-        expect(assigns(:content_liquid_templates)).to eq([@content_liquid_template])
+        expect(assigns(:body_liquid_templates)).to eq([@body_liquid_template])
       end
 
       it 'renders the #new template' do
@@ -107,10 +107,10 @@ RSpec.describe BooksController, type: :controller do
         expect(Book.count).to eq(0)
       end
 
-      it 'assigns @front_liquid_templates, @toc_liquid_templates and @content_liquid_templates' do
+      it 'assigns @front_liquid_templates, @toc_liquid_templates and @body_liquid_templates' do
         expect(assigns(:front_liquid_templates)).to eq([@front_liquid_template])
         expect(assigns(:toc_liquid_templates)).to eq([@toc_liquid_template])
-        expect(assigns(:content_liquid_templates)).to eq([@content_liquid_template])
+        expect(assigns(:body_liquid_templates)).to eq([@body_liquid_template])
       end
 
       it 'renders the #new template' do
@@ -140,10 +140,10 @@ RSpec.describe BooksController, type: :controller do
     context 'book exists' do
       before(:each) { get :form, project_id: book_with_project.project }
   
-      it 'assigns @front_liquid_templates, @toc_liquid_templates and @content_liquid_templates' do
+      it 'assigns @front_liquid_templates, @toc_liquid_templates and @body_liquid_templates' do
         expect(assigns(:front_liquid_templates)).to eq([@front_liquid_template])
         expect(assigns(:toc_liquid_templates)).to eq([@toc_liquid_template])
-        expect(assigns(:content_liquid_templates)).to eq([@content_liquid_template])
+        expect(assigns(:body_liquid_templates)).to eq([@body_liquid_template])
       end
 
       it 'assigns @book' do
@@ -164,10 +164,10 @@ RSpec.describe BooksController, type: :controller do
       context 'does not include liquid_template_id param' do
         before(:each) { get :form, project_id: project_without_book }
 
-        it 'assigns @front_liquid_templates, @toc_liquid_templates and @content_liquid_templates' do
+        it 'assigns @front_liquid_templates, @toc_liquid_templates and @body_liquid_templates' do
           expect(assigns(:front_liquid_templates)).to eq([@front_liquid_template])
           expect(assigns(:toc_liquid_templates)).to eq([@toc_liquid_template])
-          expect(assigns(:content_liquid_templates)).to eq([@content_liquid_template])
+          expect(assigns(:body_liquid_templates)).to eq([@body_liquid_template])
         end
 
         it 'renders the form partial' do
@@ -229,23 +229,23 @@ RSpec.describe BooksController, type: :controller do
               end
             end
 
-            context 'is section' do
-              before(:each) { get :form, project_id: project_without_book, liquid_template_id: @content_liquid_template, section_type: 'section' }
+            context 'is body section' do
+              before(:each) { get :form, project_id: project_without_book, liquid_template_id: @body_liquid_template, section_type: 'body_section' }
 
-              it 'builds a section' do
-                expect(assigns(:book).sections.first).to_not be_nil
+              it 'builds a body section' do
+                expect(assigns(:book).body_sections.first).to_not be_nil
               end
 
-              it 'sets the section content and section parameters' do
-                expect(assigns(:book).sections.first.content).to eq(@content_liquid_template.content)
+              it 'sets the body section content and section parameters' do
+                expect(assigns(:book).body_sections.first.content).to eq(@body_liquid_template.content)
               end
 
-              it 'assigns @content_liquid_templates' do
-                expect(assigns(:content_liquid_templates)).to eq([@content_liquid_template])
+              it 'assigns @body_liquid_templates' do
+                expect(assigns(:body_liquid_templates)).to eq([@body_liquid_template])
               end
 
-              it 'renders the wrapper_sections partial' do
-                expect(response).to render_template(partial: '_wrapper_sections')              
+              it 'renders the wrapper_body partial' do
+                expect(response).to render_template(partial: '_wrapper_body')              
               end
             end
 
@@ -269,9 +269,7 @@ RSpec.describe BooksController, type: :controller do
   describe 'different user' do
     it 'raises an error' do
       sign_in create(:user)
-      expect { 
-        get :show, id: book_with_project 
-      }.to raise_error(ActiveRecord::RecordNotFound) 
+      expect { get :show, id: book_with_project }.to raise_error(ActiveRecord::RecordNotFound) 
     end
   end
 end
