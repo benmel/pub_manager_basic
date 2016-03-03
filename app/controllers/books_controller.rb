@@ -105,7 +105,9 @@ class BooksController < ApplicationController
       front_section_attributes: [:id, :content, 
         filled_liquid_template_attributes: [:id, :content, 
           filled_liquid_template_parameters_attributes: [:id, :name, :value]]],
-      toc_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
+      toc_section_attributes: [:id, :content, 
+        filled_liquid_template_attributes: [:id, :content, 
+          filled_liquid_template_parameters_attributes: [:id, :name, :value]]],
       body_sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
   end
 end

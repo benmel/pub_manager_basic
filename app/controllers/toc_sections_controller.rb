@@ -7,6 +7,7 @@ class TocSectionsController < ApplicationController
 			redirect_to edit_book_toc_section_path
 		else
 			@toc_section = TocSection.new
+			@toc_section.build_filled_liquid_template
 		end
 	end
 
@@ -48,6 +49,10 @@ class TocSectionsController < ApplicationController
 	end
 
 	def toc_section_params
-		params.require(:toc_section).permit(:content, section_parameters_attributes: [:id, :name, :value, :_destroy])
+		params.require(:toc_section).permit(
+			:content, 
+			filled_liquid_template_attributes: [:id, :content, 
+				filled_liquid_template_parameters_attributes: [:id, :name, :value, :_destroy]]
+		)
 	end
 end

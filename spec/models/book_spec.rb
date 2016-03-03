@@ -32,6 +32,7 @@ RSpec.describe Book, type: :model do
 			it 'builds the filled_liquid_templates' do
 				book.build_empty_book
 				expect(book.front_section.filled_liquid_template).to_not be_nil
+        expect(book.toc_section.filled_liquid_template).to_not be_nil
 			end
 		end
 
@@ -54,6 +55,8 @@ RSpec.describe Book, type: :model do
 			end
 
 			it 'builds the filled_liquid_template' do
+        book.build_empty_toc_section
+        expect(book.toc_section.filled_liquid_template).to_not be_nil
 			end
 		end
 
@@ -90,17 +93,20 @@ RSpec.describe Book, type: :model do
     end
 
     describe 'set_toc_section_from(liquid_template)' do
-      before(:each) { book.build_toc_section }
-
-      it 'should set the toc_section content' do
-        book.set_toc_section_from(liquid_template)
-        expect(book.toc_section.content).to eq(liquid_template.content)
+      before(:each) do
+        book.build_toc_section
+        book.toc_section.build_filled_liquid_template
       end
 
-      it 'should set the toc_section section_parameters' do
+      it 'should set the toc_section filled_liquid_template content' do
+        book.set_toc_section_from(liquid_template)
+        expect(book.toc_section.filled_liquid_template.content).to eq(liquid_template.content)
+      end
+
+      it 'should set the toc_section filled_liquid_template filled_liquid_template_parameters' do
         liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
         book.set_toc_section_from(liquid_template)
-        expect(book.toc_section.section_parameters.first.name).to eq(liquid_template_parameter.name)
+        expect(book.toc_section.filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
       end
     end
 

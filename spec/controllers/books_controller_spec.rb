@@ -220,8 +220,8 @@ RSpec.describe BooksController, type: :controller do
                 expect(assigns(:book).toc_section).to_not be_nil
               end
 
-              it 'sets the toc section content and section parameters' do
-                expect(assigns(:book).toc_section.content).to eq(@toc_liquid_template.content)
+              it 'sets the toc section filled_liquid_template content' do
+                expect(assigns(:book).toc_section.filled_liquid_template.content).to eq(@toc_liquid_template.content)
               end
 
               it 'renders the wrapper_toc partial' do

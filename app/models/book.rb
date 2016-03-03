@@ -21,6 +21,7 @@ class Book < ActiveRecord::Base
 
   def build_empty_toc_section
     build_toc_section
+    toc_section.build_filled_liquid_template
   end
 
   def build_empty_body_section
@@ -32,8 +33,7 @@ class Book < ActiveRecord::Base
   end
 
   def set_toc_section_from(liquid_template)
-  	self.toc_section.content = liquid_template.content
-    liquid_template.liquid_template_parameters.each { |liquid_template_parameter| self.toc_section.section_parameters.build(name: liquid_template_parameter.name) }
+    toc_section.filled_liquid_template.set_from liquid_template
   end
 
   def set_first_body_section_from(liquid_template)
