@@ -1,8 +1,13 @@
 .row
 	.col-md-2
-		%b= label(:description, :template)
+		%b= label(:filled_liquid_template, :content)
 	.col-md-10	
-		= @description.template
+		= @description.filled_liquid_template.content if @description.filled_liquid_template
+.row
+	.col-md-2
+		%b= label(:filled_liquid_template, :filled_liquid_template_parameters, 'Parameters')
+	.col-md-10
+		= @description.filled_liquid_template.filled_liquid_template_parameters.map(&:name).join(', ') if @description.filled_liquid_template		
 .row
 	.col-md-2
 		%b= label(:description, :content)
@@ -18,10 +23,5 @@
 		%b= label(:description, :excerpt)
 	.col-md-10	
 		= @description.excerpt			
-.row
-	.col-md-2
-		%b= label(:description, :description_parameters)
-	.col-md-10
-		= @description.description_parameters.map(&:name).join(', ')			
 = link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
 = link_to 'Back', project_path(@project), class: 'btn btn-default'

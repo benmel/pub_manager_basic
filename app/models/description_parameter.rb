@@ -1,4 +1,4 @@
 class DescriptionParameter < ActiveRecord::Base
-  belongs_to :description, inverse_of: :description_parameters
+  belongs_to :description
 	validates :name, presence: true
 end

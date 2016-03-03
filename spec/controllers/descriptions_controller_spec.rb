@@ -8,7 +8,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		sign_in @user
 	end
 
-	let(:description_with_project) { create(:description, project: @user.projects.first) }
+	let(:description_with_project) { create(:description_with_valid_template, project: @user.projects.first) }
 	let(:project_without_description) { @user.projects.second }
 
 	describe 'GET #show' do
@@ -55,6 +55,10 @@ RSpec.describe DescriptionsController, type: :controller do
 				expect(assigns(:description)).to be_a_new(Description)
 			end
 
+			it 'builds a filled_liquid_template' do
+				expect(assigns(:description).filled_liquid_template).to_not be_nil
+			end
+
 			it 'assigns @liquid_templates' do
 				expect(assigns(:liquid_templates)).to eq([@liquid_template])
 			end
@@ -80,9 +84,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'description does not exist' do
 			it 'raises an error' do
-				expect { 
-					get :edit, project_id: project_without_description 
-				}.to raise_error(ActiveRecord::RecordNotFound) 
+				expect { get :edit, project_id: project_without_description }.to raise_error(ActiveRecord::RecordNotFound) 
 			end
 		end
 	end
@@ -103,8 +105,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		context 'with invalid attributes' do
 			before :each do
 				@liquid_template = create(:liquid_template, template_type: :description, user: @user)
-				description = build(:description, :invalid_template)
-				post :create, project_id: project_without_description, description: description.attributes
+				post :create, project_id: project_without_description, description: attributes_for(:description, content: '')
 			end
 
 			it 'does not create the description' do
@@ -123,10 +124,15 @@ RSpec.describe DescriptionsController, type: :controller do
 
 	describe 'PATCH #update' do
 		context 'with valid attributes' do
-			before(:each) { patch :update, project_id: description_with_project.project, description: attributes_for(:description, :valid_template) }
+			before(:each) do
+				description_with_project.filled_liquid_template.content = 'different'
+				description_attributes = description_with_project.attributes.merge(
+					'filled_liquid_template_attributes' => description_with_project.filled_liquid_template.attributes)
+				patch :update, project_id: description_with_project.project, description: description_attributes
+			end
 			
 			it 'updates the description' do
-				expect(description_with_project.reload.template).to eq('Hello {{ name }}')
+				expect(description_with_project.reload.filled_liquid_template.content).to eq('different')
 			end
 
 			it 'redirects to #show the updated project' do
@@ -136,12 +142,12 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@description = build(:description, :invalid_template)
+				@description = build(:description, content: '')
 				patch :update, project_id: description_with_project.project, description: @description.attributes
 			end
 
 			it 'does not update the description' do
-				expect(description_with_project.reload.template).to_not eq(@description.template)
+				expect(description_with_project.reload.content).to_not eq(@description.content)
 			end
 
 			it 'renders the #edit template' do
@@ -193,9 +199,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'description does not exist' do
 			it 'raises an error' do
-				expect { 
-					get :preview, project_id: project_without_description 
-				}.to raise_error(ActiveRecord::RecordNotFound) 
+				expect { get :preview, project_id: project_without_description }.to raise_error(ActiveRecord::RecordNotFound) 
 			end
 		end
 	end
@@ -230,8 +234,12 @@ RSpec.describe DescriptionsController, type: :controller do
 					expect(assigns(:description)).to be_a_new(Description)
 				end
 
+				it 'builds a filled_liquid_template' do
+					expect(assigns(:description).filled_liquid_template).to_not be_nil
+				end
+
 				it 'sets the description template and description parameters' do
-					expect(assigns(:description).template).to eq(@liquid_template.content)
+					expect(assigns(:description).filled_liquid_template.content).to eq(@liquid_template.content)
 				end	
 			end
 
@@ -250,9 +258,7 @@ RSpec.describe DescriptionsController, type: :controller do
 	describe 'different user' do
 		it 'raises an error' do
 			sign_in create(:user)
-			expect { 
-				get :show, project_id: description_with_project.project 
-			}.to raise_error(ActiveRecord::RecordNotFound) 
+			expect { get :show, project_id: description_with_project.project }.to raise_error(ActiveRecord::RecordNotFound) 
 		end
 	end
 end

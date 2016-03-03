@@ -6,7 +6,7 @@ RSpec.describe DescriptionParameter, type: :model do
   end
 
   describe 'associations' do
-  	it { should belong_to(:description).inverse_of(:description_parameters) }
+  	it { should belong_to(:description) }
   end
 
   describe 'validations' do

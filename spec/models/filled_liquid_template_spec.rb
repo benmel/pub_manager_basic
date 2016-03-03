@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe FilledLiquidTemplate, type: :model do
+	let (:filled_liquid_template) { build(:filled_liquid_template) }
+	let (:filled_liquid_template_with_parameters) { create(:filled_liquid_template_with_parameters) }
+
 	it 'has a valid factory' do
   	expect(build(:filled_liquid_template)).to be_valid
   end
@@ -31,6 +34,25 @@ RSpec.describe FilledLiquidTemplate, type: :model do
 			liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
 			filled_liquid_template.set_from(liquid_template)
 			expect(filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
+		end
+	end
+
+	describe 'parsed_liquid_template' do
+		it 'returns a Liquid template' do
+			expect(filled_liquid_template.parsed_liquid_template).to be_a(Liquid::Template)
+		end
+	end
+
+	describe 'sanitized_content' do
+		it 'should remove \r and \n from content' do
+			filled_liquid_template.content = "Hello,\r\nHow are you?"
+			expect(filled_liquid_template.sanitized_content).to eq("Hello,How are you?")
+		end
+	end
+
+	describe 'filled_liquid_template_parameters_hash' do
+		it 'creates a hash using the filled_liquid_template_parameters' do
+			expect(filled_liquid_template_with_parameters.filled_liquid_template_parameters_hash).to eq(filled_liquid_template_with_parameters.filled_liquid_template_parameters.pluck(:name, :value).to_h)
 		end
 	end
 end

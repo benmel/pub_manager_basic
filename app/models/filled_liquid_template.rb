@@ -10,4 +10,16 @@ class FilledLiquidTemplate < ActiveRecord::Base
 			self.filled_liquid_template_parameters.build(name: liquid_template_parameter.name)
 		end
   end
+
+  def parsed_liquid_template
+    @parsed_liquid_template ||= Liquid::Template.parse(sanitized_content)
+  end
+
+  def sanitized_content
+    @sanitized_content ||= self.content.delete("\r").delete("\n")
+  end
+
+  def filled_liquid_template_parameters_hash
+    @filled_liquid_template_parameters_hash ||= self.filled_liquid_template_parameters.pluck(:name, :value).to_h
+  end
 end

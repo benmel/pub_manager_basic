@@ -13,6 +13,7 @@ class DescriptionsController < ApplicationController
 			redirect_to edit_project_description_path
 		else
 			@description = Description.new
+			@description.build_filled_liquid_template
 			@liquid_templates = find_liquid_templates
 		end
 	end
@@ -68,7 +69,8 @@ class DescriptionsController < ApplicationController
 			# only render form with filled in template if liquid_template_id is present
 			if params[:liquid_template_id].present?
 				liquid_template = find_liquid_template
-				@description.set_template_and_description_parameters_from liquid_template
+				@description.build_filled_liquid_template
+				@description.set_filled_liquid_template_from liquid_template
 			end
 		end
 		render partial: 'form'
@@ -88,6 +90,10 @@ class DescriptionsController < ApplicationController
 	end
 
 	def description_params
-		params.require(:description).permit(:template, :content, :chapter_list, :excerpt, description_parameters_attributes: [:id, :name, :value, :_destroy])
+		params.require(:description).permit(
+			:content, :chapter_list, :excerpt,
+			filled_liquid_template_attributes: [:id, :content, 
+				filled_liquid_template_parameters_attributes: [:id, :name, :value, :_destroy]]
+		)
 	end
 end
