@@ -15,9 +15,7 @@ class BooksController < ApplicationController
       redirect_to @project.book
     else
       @book = Book.new
-      @book.build_front_section
-      @book.build_toc_section
-      @book.body_sections.build
+      @book.build_empty_book
       set_liquid_templates
     end
   end
@@ -55,16 +53,16 @@ class BooksController < ApplicationController
         @liquid_template = find_liquid_template
         case @liquid_template.template_type
         when 'front_section'
-          @book.build_front_section
-          @book.set_front_section_content_and_section_parameters_from @liquid_template
+          @book.build_empty_front_section
+          @book.set_front_section_from @liquid_template
           render partial: 'wrapper_front'
         when 'toc_section'
-          @book.build_toc_section
-          @book.set_toc_section_content_and_section_parameters_from @liquid_template
+          @book.build_empty_toc_section
+          @book.set_toc_section_from @liquid_template
           render partial: 'wrapper_toc'
         when 'body_section'
-          @book.body_sections.build
-          @book.set_first_body_section_content_and_section_parameters_from @liquid_template
+          @book.build_empty_body_section
+          @book.set_first_body_section_from @liquid_template
           @body_liquid_templates = find_liquid_templates(:body_section)
           render partial: 'wrapper_body'
         else
@@ -104,7 +102,9 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(
-      front_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
+      front_section_attributes: [:id, :content, 
+        filled_liquid_template_attributes: [:id, :content, 
+          filled_liquid_template_parameters_attributes: [:id, :name, :value]]],
       toc_section_attributes: [:id, :content, section_parameters_attributes: [:id, :name, :value]],
       body_sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
   end

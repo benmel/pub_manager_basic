@@ -204,8 +204,8 @@ RSpec.describe BooksController, type: :controller do
                 expect(assigns(:book).front_section).to_not be_nil
               end
 
-              it 'sets the front section content and section parameters' do
-                expect(assigns(:book).front_section.content).to eq(@front_liquid_template.content)
+              it 'sets the front section filled_liquid_template content' do
+                expect(assigns(:book).front_section.filled_liquid_template.content).to eq(@front_liquid_template.content)
               end
 
               it 'renders the wrapper_front partial' do
