@@ -15,16 +15,16 @@
 		- else
 			= link_to('Create', new_book_toc_section_path(@book))
 #sortable
-	- @book.sections.rank(:row_order).each do |section|
-		.row{ data: { url: book_section_path(@book, section) } }
+	- @book.body_sections.rank(:row_order).each do |body_section|
+		.row{ data: { url: book_body_section_path(@book, body_section) } }
 			.col-md-4
 				%span.glyphicon.glyphicon-menu-hamburger{ 'aria-hidden': 'true' } 
-				= label(:section, :name, section.name)
+				= label(:body_section, :name, body_section.name)
 			.col-md-8
-				= link_to('Edit', edit_book_section_path(@book, section))
+				= link_to('Edit', edit_book_body_section_path(@book, body_section))
 .row
 	.col-md-12
-		= link_to('Create Section', new_book_section_path(@book))	
+		= link_to('Create Section', new_book_body_section_path(@book))	
 		
 = link_to 'Project', project_path(@book.project), class: 'btn btn-default' if @book.project
 = link_to 'Delete', book_path(@book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

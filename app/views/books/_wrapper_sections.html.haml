@@ -1,7 +1,0 @@
-= simple_fields_for @book do |f|
-	= f.simple_fields_for :sections, child_index: (Time.current.to_f * 1000).to_i do |section|
-		.nested-fields
-			= select_tag 'choose_section_template', options_from_collection_for_select(@content_templates, 'id', 'name', @template.id), prompt: 'Choose a section template', id: nil, class: 'choose_section_template form-control', data: { url: form_project_book_path, section_type: 'section' }
-			= render 'sections/fields', f: section
-			%br
-			= link_to_remove_association "Remove Section", f, class: 'btn btn-default'

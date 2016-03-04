@@ -26,6 +26,10 @@ RSpec.describe FrontSectionsController, type: :controller do
 				expect(assigns(:front_section)).to be_a_new(FrontSection)
 			end
 
+			it 'builds a filled_liquid_template' do
+				expect(assigns(:front_section).filled_liquid_template).to_not be_nil
+			end
+
 			it 'renders the #new template' do
 				expect(response).to render_template(:new)
 			end

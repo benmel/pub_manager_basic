@@ -7,6 +7,7 @@ class FrontSectionsController < ApplicationController
 			redirect_to edit_book_front_section_path
 		else
 			@front_section = FrontSection.new
+			@front_section.build_filled_liquid_template
 		end
 	end
 
@@ -48,6 +49,10 @@ class FrontSectionsController < ApplicationController
 	end
 
 	def front_section_params
-		params.require(:front_section).permit(:content, section_parameters_attributes: [:id, :name, :value, :_destroy])
+		params.require(:front_section).permit(
+			:content, 
+			filled_liquid_template_attributes: [:id, :content, 
+				filled_liquid_template_parameters_attributes: [:id, :name, :value, :_destroy]]
+		)
 	end
 end

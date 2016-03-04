@@ -1,0 +1,4 @@
+= render 'form'
+%br
+= link_to 'Delete', liquid_template_path(@liquid_template), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+= link_to 'Back', liquid_template_path(@liquid_template), class: 'btn btn-default'

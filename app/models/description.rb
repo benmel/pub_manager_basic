@@ -1,42 +1,34 @@
 class Description < ActiveRecord::Base
   belongs_to :project, inverse_of: :description
-  has_many :description_parameters, inverse_of: :description, dependent: :destroy
-  validates :template, presence: true
-  accepts_nested_attributes_for :description_parameters, reject_if: :all_blank, allow_destroy: true
-
-  validate :no_liquid_template_errors
-
-  def no_liquid_template_errors
-    Liquid::Template.parse(clean_template)
-  rescue Liquid::SyntaxError => e
-    errors.add(:base, e.message)
-  end
+  has_one :filled_liquid_template, as: :filled_liquid_templatable, dependent: :destroy
+  accepts_nested_attributes_for :filled_liquid_template
+  validates :content, presence: true
 
   def kindle
-  	liquid_template.render(parameters_hash Marketplace::KINDLE)
+    parsed_liquid_template.render(parameters_hash Marketplace::KINDLE)
   end
 
   def createspace
-  	liquid_template.render(parameters_hash Marketplace::CREATESPACE)
+  	parsed_liquid_template.render(parameters_hash Marketplace::CREATESPACE)
   end
 
   def acx
-  	liquid_template.render(parameters_hash Marketplace::ACX)
+  	parsed_liquid_template.render(parameters_hash Marketplace::ACX)
   end
 
-  def liquid_template
-  	@liquid_template ||= Liquid::Template.parse(clean_template)
-  end
-
-  def clean_template
-  	@clean_template ||= self.template.delete("\r").delete("\n")
+  def parsed_liquid_template
+    @parsed_liquid_template ||= self.filled_liquid_template.parsed_liquid_template
   end
 
   def parameters_hash(marketplace)
-  	marketplace_hash = { 'marketplace' => marketplace }
-  	[marketplace_hash, project_hash, description_hash, chapters_hash, description_parameters_hash].inject(:merge)
+  	[marketplace_hash(marketplace), project_hash, description_hash, chapters_hash, filled_liquid_template_parameters_hash].inject(:merge)
   end
 
+  def marketplace_hash(marketplace)
+    { 'marketplace' => marketplace }
+  end
+
+  # TODO: move this to project model
   def project_hash
   	@project_hash ||= self.project.attributes.slice('title', 'subtitle', 'author')
   end
@@ -49,12 +41,11 @@ class Description < ActiveRecord::Base
   	@chapters_hash ||= { 'chapters' => self.chapter_list.split(';') }
   end
 
-  def description_parameters_hash
-  	@description_parameters_hash ||= self.description_parameters.pluck(:name, :value).to_h
+  def filled_liquid_template_parameters_hash
+    @filled_liquid_template_parameters_hash ||= self.filled_liquid_template.filled_liquid_template_parameters_hash
   end
 
-  def set_template_and_description_parameters_from(template)
-    self.template = template.content
-    template.template_parameters.each { |template_parameter| self.description_parameters.build(name: template_parameter.name) }
+  def set_filled_liquid_template_from(liquid_template)
+    self.filled_liquid_template.set_from(liquid_template)
   end
 end

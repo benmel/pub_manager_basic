@@ -5,13 +5,13 @@
 replaceForm = (data) ->
   $('#new_description').replaceWith(data)
 
-$(document).on 'change', '#choose_template', (evt) ->
-  template_id = $(this).val()
-  if template_id
+$(document).on 'change', '#choose_liquid_template', (evt) ->
+  liquid_template_id = $(this).val()
+  if liquid_template_id
     $.ajax 
       url: $(this).data('url')
       data:
-        template_id: template_id
+        liquid_template_id: liquid_template_id
       type: 'GET'
       dataType: 'html'
       error: (jqXHR, textStatus, errorThrown) ->

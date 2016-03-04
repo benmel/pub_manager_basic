@@ -7,13 +7,13 @@ $(document).on 'page:change', ->
 	initializeCocoon()
 	initalizeSortable()
 
-$(document).on 'change', '#choose_front_section_template', (evt) ->
+$(document).on 'change', '#choose_front_section_liquid_template', (evt) ->
 	prepareData $(this), $('#front-section')
 
-$(document).on 'change', '#choose_toc_section_template', (evt) ->
+$(document).on 'change', '#choose_toc_section_liquid_template', (evt) ->
 	prepareData $(this), $('#toc-section')
 
-$(document).on 'change', '.choose_section_template', (evt) -> 
+$(document).on 'change', '.choose_body_section_liquid_template', (evt) -> 
 	prepareData $(this), $(this).parent()     
 
 initializeTinyMce = ->
@@ -21,14 +21,14 @@ initializeTinyMce = ->
 	bindTinyMce()
 
 initializeCocoon = ->
-	$('#sections').on 'cocoon:after-insert', (evt, section) ->
+	$('#body-sections').on 'cocoon:after-insert', (evt, body_section) ->
 		bindTinyMce()
 
 initalizeSortable = ->
 	$('#sortable').sortable
 		axis: 'y'
 		update: (evt, ui) ->
-			updateSectionRow ui.item.data('url'), ui.item.index()
+			updateBodySectionRow ui.item.data('url'), ui.item.index()
 
 bindTinyMce = ->
 	tinymce.init
@@ -39,18 +39,18 @@ bindTinyMce = ->
 
 prepareData = (node, section) ->
 	url = node.data('url')
-	template_id = node.val()
+	liquid_template_id = node.val()
 	section_type = node.data('section-type')
-	getForm url, template_id, section_type, section
+	getForm url, liquid_template_id, section_type, section
 
-getForm = (url, template_id, section_type, section) ->
-	if !!url and !!template_id and !!section_type and !!section
+getForm = (url, liquid_template_id, section_type, section) ->
+	if !!url and !!liquid_template_id and !!section_type and !!section
 		$.ajax 
 			url: url
 			method: 'GET'
 			dataType: 'html'
 			data:
-				template_id: template_id
+				liquid_template_id: liquid_template_id
 				section_type: section_type
 			error: (jqXHR, textStatus, errorThrown) ->
 				console.log(textStatus)
@@ -61,12 +61,12 @@ replaceForm = (section, data)	->
 	section.replaceWith(data)
 	bindTinyMce()
 
-updateSectionRow = (url, row_order_position) ->
+updateBodySectionRow = (url, row_order_position) ->
 	if !!url and typeof row_order_position is 'number'
 		$.ajax
 			url: url
 			method: 'PATCH'
 			dataType: 'json'
 			data:
-				section:
+				body_section:
 					row_order_position: row_order_position
