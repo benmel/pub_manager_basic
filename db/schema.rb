@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302044751) do
+ActiveRecord::Schema.define(version: 20160304170321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,19 +45,8 @@ ActiveRecord::Schema.define(version: 20160302044751) do
 
   add_index "covers", ["project_id"], name: "index_covers_on_project_id", using: :btree
 
-  create_table "description_parameters", force: :cascade do |t|
-    t.integer  "description_id"
-    t.text     "name"
-    t.text     "value"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  add_index "description_parameters", ["description_id"], name: "index_description_parameters_on_description_id", using: :btree
-
   create_table "descriptions", force: :cascade do |t|
     t.integer  "project_id"
-    t.text     "template"
     t.text     "content"
     t.text     "chapter_list"
     t.text     "excerpt"
@@ -130,20 +119,6 @@ ActiveRecord::Schema.define(version: 20160302044751) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
-  create_table "section_parameters", force: :cascade do |t|
-    t.integer  "body_section_id"
-    t.text     "name"
-    t.text     "value"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.integer  "front_section_id"
-    t.integer  "toc_section_id"
-  end
-
-  add_index "section_parameters", ["body_section_id"], name: "index_section_parameters_on_body_section_id", using: :btree
-  add_index "section_parameters", ["front_section_id"], name: "index_section_parameters_on_front_section_id", using: :btree
-  add_index "section_parameters", ["toc_section_id"], name: "index_section_parameters_on_toc_section_id", using: :btree
-
   create_table "toc_sections", force: :cascade do |t|
     t.integer  "book_id"
     t.text     "content"
@@ -174,15 +149,11 @@ ActiveRecord::Schema.define(version: 20160302044751) do
   add_foreign_key "body_sections", "books"
   add_foreign_key "books", "projects"
   add_foreign_key "covers", "projects"
-  add_foreign_key "description_parameters", "descriptions"
   add_foreign_key "descriptions", "projects"
   add_foreign_key "filled_liquid_template_parameters", "filled_liquid_templates"
   add_foreign_key "front_sections", "books"
   add_foreign_key "liquid_template_parameters", "liquid_templates"
   add_foreign_key "liquid_templates", "users"
   add_foreign_key "projects", "users"
-  add_foreign_key "section_parameters", "body_sections"
-  add_foreign_key "section_parameters", "front_sections"
-  add_foreign_key "section_parameters", "toc_sections"
   add_foreign_key "toc_sections", "books"
 end
