@@ -22,6 +22,10 @@ RSpec.describe BodySectionsController, type: :controller do
 			expect(assigns(:body_section)).to be_a_new(BodySection)
 		end
 
+		it 'builds a filled_liquid_template' do
+			expect(assigns(:body_section).filled_liquid_template).to_not be_nil
+		end
+
 		it 'renders the #new template' do
 			expect(response).to render_template(:new)
 		end

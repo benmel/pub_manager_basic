@@ -4,6 +4,7 @@ class BodySectionsController < ApplicationController
 	def new
 		@book = find_book
 		@body_section = @book.body_sections.build
+		@body_section.build_filled_liquid_template
 	end
 
 	def edit
@@ -54,6 +55,8 @@ class BodySectionsController < ApplicationController
 	end
 
 	def body_section_params
-		params.require(:body_section).permit(:name, :content, :row_order_position, section_parameters_attributes: [:id, :name, :value, :_destroy])
+		params.require(:body_section).permit(:content, :name, :row_order_position, 
+			filled_liquid_template_attributes: [:id, :content, 
+				filled_liquid_template_parameters_attributes: [:id, :name, :value, :_destroy]])
 	end
 end

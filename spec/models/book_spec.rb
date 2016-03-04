@@ -26,7 +26,7 @@ RSpec.describe Book, type: :model do
 				book.build_empty_book
 				expect(book.front_section).to_not be_nil
 				expect(book.toc_section).to_not be_nil
-				expect(book.body_sections.first).to_not be_nil
+				expect(book.body_sections.last).to_not be_nil
 			end
 
 			it 'builds the filled_liquid_templates' do
@@ -63,10 +63,12 @@ RSpec.describe Book, type: :model do
 		describe 'build_empty_body_section' do
 			it 'builds a body_section' do
 				book.build_empty_body_section
-				expect(book.body_sections.first).to_not be_nil
+				expect(book.body_sections.last).to_not be_nil
 			end
 
 			it 'builds the filled_liquid_template' do
+        book.build_empty_body_section
+        expect(book.body_sections.last.filled_liquid_template).to_not be_nil
 			end
 		end
   end
@@ -110,18 +112,21 @@ RSpec.describe Book, type: :model do
       end
     end
 
-    describe 'set_first_body_section_from(liquid_template)' do
-      before(:each) { book.body_sections.build }
-
-      it 'should set the first body section content' do
-        book.set_first_body_section_from(liquid_template)
-        expect(book.body_sections.first.content).to eq(liquid_template.content)
+    describe 'set_last_body_section_from(liquid_template)' do
+      before(:each) do
+        body_section = book.body_sections.build
+        body_section.build_filled_liquid_template
       end
 
-      it 'should set the first body_section section_parameters' do
+      it 'should set the last body_section filled_liquid_template content' do
+        book.set_last_body_section_from(liquid_template)
+        expect(book.body_sections.last.filled_liquid_template.content).to eq(liquid_template.content)
+      end
+
+      it 'should set the last body_section filled_liquid_template filled_liquid_template_parameters' do
         liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
-        book.set_first_body_section_from(liquid_template)
-        expect(book.body_sections.first.section_parameters.first.name).to eq(liquid_template_parameter.name)
+        book.set_last_body_section_from(liquid_template)
+        expect(book.body_sections.last.filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
       end
     end
   end

@@ -62,7 +62,7 @@ class BooksController < ApplicationController
           render partial: 'wrapper_toc'
         when 'body_section'
           @book.build_empty_body_section
-          @book.set_first_body_section_from @liquid_template
+          @book.set_last_body_section_from @liquid_template
           @body_liquid_templates = find_liquid_templates(:body_section)
           render partial: 'wrapper_body'
         else
@@ -108,6 +108,8 @@ class BooksController < ApplicationController
       toc_section_attributes: [:id, :content, 
         filled_liquid_template_attributes: [:id, :content, 
           filled_liquid_template_parameters_attributes: [:id, :name, :value]]],
-      body_sections_attributes: [:id, :name, :content, section_parameters_attributes: [:id, :name, :value]])
+      body_sections_attributes: [:id, :content, :name,
+        filled_liquid_template_attributes: [:id, :content, 
+          filled_liquid_template_parameters_attributes: [:id, :name, :value]]])
   end
 end

@@ -233,11 +233,11 @@ RSpec.describe BooksController, type: :controller do
               before(:each) { get :form, project_id: project_without_book, liquid_template_id: @body_liquid_template, section_type: 'body_section' }
 
               it 'builds a body section' do
-                expect(assigns(:book).body_sections.first).to_not be_nil
+                expect(assigns(:book).body_sections.last).to_not be_nil
               end
 
-              it 'sets the body section content and section parameters' do
-                expect(assigns(:book).body_sections.first.content).to eq(@body_liquid_template.content)
+              it 'sets the body section filled_liquid_template content' do
+                expect(assigns(:book).body_sections.last.filled_liquid_template.content).to eq(@body_liquid_template.content)
               end
 
               it 'assigns @body_liquid_templates' do
