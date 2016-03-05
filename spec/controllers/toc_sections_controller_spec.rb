@@ -70,7 +70,12 @@ RSpec.describe TocSectionsController, type: :controller do
 		end
 
 		context 'with invalid attributes' do
-			before(:each) { post :create, book_id: book_without_toc_section, toc_section: attributes_for(:toc_section, content: '') }
+			before(:each) do
+				toc_section = build(:toc_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				toc_section_attributes = toc_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+				post :create, book_id: book_without_toc_section, toc_section: toc_section_attributes
+			end
 
 			it 'does not create the toc_section' do
 				expect(TocSection.count).to eq(0)
@@ -100,12 +105,14 @@ RSpec.describe TocSectionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@toc_section = build(:toc_section, content: '')
-				patch :update, book_id: toc_section_with_book.book, toc_section: @toc_section.attributes
+				toc_section = build(:toc_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				toc_section_attributes = toc_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+				patch :update, book_id: toc_section_with_book.book, toc_section: toc_section_attributes
 			end
 
 			it 'does not update the toc_section' do
-				expect(toc_section_with_book.reload.content).to_not eq(@toc_section.content)
+				expect(toc_section_with_book.reload.filled_liquid_template).to be_nil
 			end
 
 			it 'renders the #edit template' do

@@ -13,8 +13,4 @@ RSpec.describe FrontSection, type: :model do
   describe 'nested attributes' do
     it { should accept_nested_attributes_for(:filled_liquid_template) }
   end
-
-  describe 'presence validations' do
-	  it { should validate_presence_of(:content) }
-  end
 end

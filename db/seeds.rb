@@ -82,14 +82,14 @@ end
 
 unless einstein_project.book
 	einstein_project.build_book
-	einstein_project.book.build_front_section(content: "None")
+	einstein_project.book.build_front_section
 	einstein_project.book.front_section.build_filled_liquid_template(content: front_template.content)
 	einstein_project.book.front_section.filled_liquid_template.filled_liquid_template_parameters.build(name: "writer", value: "Jack Davis")
-	einstein_project.book.build_toc_section(content: "None")
+	einstein_project.book.build_toc_section
 	einstein_project.book.toc_section.build_filled_liquid_template(content: toc_template.content)
 	einstein_project.book.body_sections.build(name: "Body", content: "This is the content of the book.")
 	einstein_project.book.body_sections.first.build_filled_liquid_template(content: body_template.content)
-	einstein_project.book.body_sections.build(name: "About the Author", content: "None")
+	einstein_project.book.body_sections.build(name: "About the Author")
 	einstein_project.book.body_sections.last.build_filled_liquid_template(content: about_template.content)
 	einstein_project.book.save!
 end

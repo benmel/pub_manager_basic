@@ -15,7 +15,6 @@ RSpec.describe BodySection, type: :model do
 	end
 
 	describe 'presence validations' do
-		it { should validate_presence_of(:content) }
 		it { should validate_presence_of(:name) }
 	end
 

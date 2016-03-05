@@ -61,7 +61,12 @@ RSpec.describe BodySectionsController, type: :controller do
 		end
 
 		context 'with invalid attributes' do
-			before(:each) { post :create, book_id: book_without_body_section, body_section: attributes_for(:body_section, content: '') }
+			before(:each) do
+				body_section = build(:body_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				body_section_attributes = body_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+				post :create, book_id: book_without_body_section, body_section: body_section_attributes
+			end
 
 			it 'does not create the body section' do
 				expect(BodySection.count).to eq(0)
@@ -98,13 +103,17 @@ RSpec.describe BodySectionsController, type: :controller do
 		end
 
 		context 'with invalid attributes' do
-			let(:body_section) { build(:body_section, content: '') }
+			before(:each) do
+				body_section = build(:body_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				@body_section_attributes = body_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+			end
 
 			context 'html format' do
-				before(:each) { patch :update, book_id: body_section_with_book.book, id: body_section_with_book, body_section: body_section.attributes }
+				before(:each) { patch :update, book_id: body_section_with_book.book, id: body_section_with_book, body_section: @body_section_attributes }
 
 				it 'does not update the body section' do
-					expect(body_section_with_book.reload.content).to_not eq(body_section.content)
+					expect(body_section_with_book.reload.filled_liquid_template).to be_nil
 				end
 
 				it 'renders the #edit template' do
@@ -114,7 +123,7 @@ RSpec.describe BodySectionsController, type: :controller do
 
 			context 'json format' do
 				it 'returns bad_request status' do
-					patch :update, book_id: body_section_with_book.book, id: body_section_with_book, body_section: body_section.attributes, format: :json
+					patch :update, book_id: body_section_with_book.book, id: body_section_with_book, body_section: @body_section_attributes, format: :json
 					expect(response).to have_http_status(:bad_request)
 				end
 			end

@@ -70,7 +70,12 @@ RSpec.describe FrontSectionsController, type: :controller do
 		end
 
 		context 'with invalid attributes' do
-			before(:each) { post :create, book_id: book_without_front_section, front_section: attributes_for(:front_section, content: '') }
+			before(:each) do
+				front_section = build(:front_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				front_section_attributes = front_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+				post :create, book_id: book_without_front_section, front_section: front_section_attributes
+			end
 
 			it 'does not create the front_section' do
 				expect(FrontSection.count).to eq(0)
@@ -100,12 +105,14 @@ RSpec.describe FrontSectionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@front_section = build(:front_section, content: '')
-				patch :update, book_id: front_section_with_book.book, front_section: @front_section.attributes
+				front_section = build(:front_section)
+				filled_liquid_template = build(:filled_liquid_template, :invalid_content)
+				front_section_attributes = front_section.attributes.merge(filled_liquid_template_attributes: filled_liquid_template.attributes)
+				patch :update, book_id: front_section_with_book.book, front_section: front_section_attributes
 			end
 
 			it 'does not update the front_section' do
-				expect(front_section_with_book.reload.content).to_not eq(@front_section.content)
+				expect(front_section_with_book.reload.filled_liquid_template).to be_nil
 			end
 
 			it 'renders the #edit template' do
