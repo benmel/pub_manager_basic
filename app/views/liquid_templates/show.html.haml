@@ -5,9 +5,9 @@
 		= @liquid_template.name
 .row
 	.col-md-2
-		%b= label(:liquid_template, :template_type, 'Type')
+		%b= label(:liquid_template, :category)
 	.col-md-10
-		= @liquid_template.template_type.humanize if @liquid_template.template_type
+		= @liquid_template.category_text
 .row
 	.col-md-2
 		%b= label(:liquid_template, :content)

@@ -47,7 +47,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		
 		context 'description does not exist' do
 			before(:each) do
-				@liquid_template = create(:liquid_template, template_type: :description, user: @user)
+				@liquid_template = create(:liquid_template, category: :description, user: @user)
 				get :new, project_id: project_without_description
 			end
 
@@ -104,7 +104,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'with invalid attributes' do
 			before :each do
-				@liquid_template = create(:liquid_template, template_type: :description, user: @user)
+				@liquid_template = create(:liquid_template, category: :description, user: @user)
 				post :create, project_id: project_without_description, description: attributes_for(:description, content: '')
 			end
 
@@ -224,7 +224,7 @@ RSpec.describe DescriptionsController, type: :controller do
 		context 'description does not exist' do
 			context 'includes liquid_template_id param' do
 				before(:each) do
-					@liquid_template = create(:liquid_template, template_type: :description, user: @user)
+					@liquid_template = create(:liquid_template, category: :description, user: @user)
 					get :form, project_id: project_without_description, liquid_template_id: @liquid_template
 				end
 

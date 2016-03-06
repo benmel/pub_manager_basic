@@ -14,7 +14,7 @@ end
 user = User.where(email: "user@example.com").first
 
 biography_template = user.liquid_templates.find_or_create_by(name: "Biography description") do |liquid_template|
-	liquid_template.template_type = "description"
+	liquid_template.category = :description
 	liquid_template.content = "{% if marketplace == 'kindle' %}<h2>Learn about the inspirational story of {{ title }}</h2>"\
 	"{% else %}<b>Learn about the inspirational story of {{ title }}</b>{% endif %}"\
 	"<p>In <i>{{ title }}: {{ subtitle }}</i> you will learn about {{ title }}. {{ content }}</p>"\
@@ -25,14 +25,14 @@ biography_template = user.liquid_templates.find_or_create_by(name: "Biography de
 end
 
 lifestyle_template = user.liquid_templates.find_or_create_by(name: "Lifestyle description") do |liquid_template|
-	liquid_template.template_type = "description"
+	liquid_template.category = :description
 	liquid_template.content = "This is a book about {{ topic }}"
 end
 
 lifestyle_template.liquid_template_parameters.find_or_create_by(name: "topic")
 
 front_template = user.liquid_templates.find_or_create_by(name: "Standard front") do |liquid_template|
-	liquid_template.template_type = "front_section"
+	liquid_template.category = :front_section
 	liquid_template.content = "<h1>{{ title }}</h1>"\
 		"<h2>{{ subtitle }}</h2>"\
 		"<p>Copyright © 2016 {{ author }}</p>"\
@@ -44,18 +44,18 @@ end
 front_template.liquid_template_parameters.find_or_create_by(name: "writer")
 
 toc_template = user.liquid_templates.find_or_create_by(name: "Standard TOC") do |liquid_template|
-	liquid_template.template_type = "toc_section"
+	liquid_template.category = :toc_section
 	liquid_template.content = "<h1>Table of Contents</h1>"\
 		"<ul><li>Chapter 1</li><li>Chapter 2</li><li>Chapter 3</li></ul>"
 end
 
 body_template = user.liquid_templates.find_or_create_by(name: "Standard body") do |liquid_template|
-	liquid_template.template_type = "body_section"
+	liquid_template.category = :body_section
 	liquid_template.content = "{{ content }}"
 end
 
 about_template = user.liquid_templates.find_or_create_by(name: "About the Author") do |liquid_template|
-	liquid_template.template_type = "body_section"
+	liquid_template.category = :body_section
 	liquid_template.content = "{{ author }} is a resident of Los Angeles. He has been a writer for 10 years."
 end
 

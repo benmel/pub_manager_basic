@@ -64,10 +64,7 @@ RSpec.describe LiquidTemplatesController, type: :controller do
   describe "POST #create" do
     context 'with valid attributes' do
       before(:each) do
-        liquid_template_with_type = build(:liquid_template, :valid_content)
-        # need to replace template_type with key, doesn't work with value
-        liquid_template_with_type_attributes = liquid_template_with_type.attributes.merge(template_type: liquid_template_with_type.template_type)
-        post :create, liquid_template: liquid_template_with_type_attributes
+        post :create, liquid_template: attributes_for(:liquid_template, :valid_content)
       end
 
       it 'creates the liquid template' do
@@ -81,9 +78,7 @@ RSpec.describe LiquidTemplatesController, type: :controller do
 
     context 'with invalid attributes' do
       before :each do
-        liquid_template_invalid_with_type = build(:liquid_template, :invalid_content)
-        liquid_template_invalid_with_type_attributes = liquid_template_invalid_with_type.attributes.merge(template_type: liquid_template_invalid_with_type.template_type)
-        post :create, liquid_template: liquid_template_invalid_with_type_attributes
+        post :create, liquid_template: attributes_for(:liquid_template, :invalid_content)
       end
 
       it 'does not create the liquid template' do
@@ -99,9 +94,7 @@ RSpec.describe LiquidTemplatesController, type: :controller do
   describe "PATCH #update" do
     context 'with valid attributes' do
       before(:each) do
-        liquid_template_with_type = build(:liquid_template, :valid_content)
-        liquid_template_with_type_attributes = liquid_template_with_type.attributes.merge(template_type: liquid_template_with_type.template_type)
-        patch :update, id: liquid_template, liquid_template: liquid_template_with_type_attributes
+        patch :update, id: liquid_template, liquid_template: attributes_for(:liquid_template, :valid_content)
       end
       
       it 'updates the liquid template' do
@@ -115,13 +108,12 @@ RSpec.describe LiquidTemplatesController, type: :controller do
 
     context 'with invalid attributes' do
       before :each do
-        @liquid_template_invalid_with_type = build(:liquid_template, :invalid_content)
-        liquid_template_invalid_with_type_attributes = @liquid_template_invalid_with_type.attributes.merge(template_type: @liquid_template_invalid_with_type.template_type)
-        patch :update, id: liquid_template, liquid_template: liquid_template_invalid_with_type_attributes
+        @liquid_template_invalid = build(:liquid_template, :invalid_content)
+        patch :update, id: liquid_template, liquid_template: @liquid_template_invalid.attributes
       end
 
       it 'does not update the liquid template' do
-        expect(liquid_template.reload.content).to_not eq(@liquid_template_invalid_with_type.content)
+        expect(liquid_template.reload.content).to_not eq(@liquid_template_invalid.content)
       end
 
       it 'renders the #edit template' do

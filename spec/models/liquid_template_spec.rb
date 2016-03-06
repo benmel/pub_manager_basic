@@ -14,15 +14,15 @@ RSpec.describe LiquidTemplate, type: :model do
 		it { should accept_nested_attributes_for(:liquid_template_parameters).allow_destroy(true) }
   end
 
-  describe 'enum' do
-    it { should define_enum_for(:template_type).with([:other, :description, :front_section, :toc_section, :body_section]) }
+  describe 'enumerize' do
+    it { should enumerize(:category).in(:other, :description, :front_section, :toc_section, :body_section).with_scope(true) }
   end
 
   describe 'presence validations' do
     before { allow(subject).to receive(:syntax_errors) }
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:content) }
-    it { should validate_presence_of(:template_type) }
+    it { should validate_presence_of(:category) }
   end
 
   describe 'Liquid validation' do
