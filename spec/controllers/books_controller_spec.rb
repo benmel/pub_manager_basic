@@ -5,9 +5,9 @@ RSpec.describe BooksController, type: :controller do
 
   before(:each) do
     @user ||= create(:user_with_projects)
-    @front_liquid_template ||= create(:liquid_template, template_type: :front_section, user: @user)
-    @toc_liquid_template ||= create(:liquid_template, template_type: :toc_section, user: @user)
-    @body_liquid_template ||= create(:liquid_template, template_type: :body_section, user: @user)
+    @front_liquid_template ||= create(:liquid_template, category: :front_section, user: @user)
+    @toc_liquid_template ||= create(:liquid_template, category: :toc_section, user: @user)
+    @body_liquid_template ||= create(:liquid_template, category: :body_section, user: @user)
     sign_in @user
   end
 
@@ -186,7 +186,7 @@ RSpec.describe BooksController, type: :controller do
           end
 
           it 'raises an error for invalid section type' do
-            expect { get :form, project_id: project_without_book, liquid_template_id: @front_liquid_template, section_type: 'fake_section' }.to raise_error(NoMethodError) 
+            expect { get :form, project_id: project_without_book, liquid_template_id: @front_liquid_template, section_type: 'fake_section' }.to raise_error(ActiveRecord::RecordNotFound) 
           end
         end
 
@@ -251,7 +251,7 @@ RSpec.describe BooksController, type: :controller do
 
             context 'is something else' do
               before(:each) do
-                other_liquid_template = create(:liquid_template, template_type: :other, user: @user)
+                other_liquid_template = create(:liquid_template, category: :other, user: @user)
                 get :form, project_id: project_without_book, liquid_template_id: other_liquid_template, section_type: 'other'
               end
 

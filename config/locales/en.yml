@@ -21,3 +21,11 @@
 
 en:
   hello: "Hello world"
+  enumerize:
+    liquid_template:
+      category:
+        other: "Other"
+        description: "Description"
+        front_section: "Front Section"
+        toc_section: "TOC Section"
+        body_section: "Body Section"

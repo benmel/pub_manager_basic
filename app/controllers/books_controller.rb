@@ -51,7 +51,7 @@ class BooksController < ApplicationController
         render partial: 'form'
       else  
         @liquid_template = find_liquid_template
-        case @liquid_template.template_type
+        case @liquid_template.category
         when 'front_section'
           @book.build_empty_front_section
           @book.set_front_section_from @liquid_template
@@ -87,11 +87,11 @@ class BooksController < ApplicationController
   end
 
   def find_liquid_template
-    current_user.liquid_templates.send(params[:section_type]).find(params[:liquid_template_id])
+    current_user.liquid_templates.with_category(params[:section_type]).find(params[:liquid_template_id])
   end
 
   def find_liquid_templates(type)
-    current_user.liquid_templates.send(type).order('LOWER(name)').all
+    current_user.liquid_templates.with_category(type).order('LOWER(name)').all    
   end
 
   def set_liquid_templates

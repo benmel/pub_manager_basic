@@ -9,7 +9,7 @@
 			- @liquid_templates.each do |liquid_template|
 				%tr
 					%td= liquid_template.name
-					%td= liquid_template.template_type.humanize if liquid_template.template_type
+					%td= liquid_template.category_text
 					%td= link_to 'View', liquid_template_path(liquid_template)
 
 = link_to 'New Template', new_liquid_template_path, class: 'btn btn-default'

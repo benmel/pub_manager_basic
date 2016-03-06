@@ -82,11 +82,11 @@ class DescriptionsController < ApplicationController
 	end
 
 	def find_liquid_template
-		current_user.liquid_templates.description.find(params[:liquid_template_id])
+		current_user.liquid_templates.with_category(:description).find(params[:liquid_template_id])
 	end
 
 	def find_liquid_templates
-		current_user.liquid_templates.description.order('LOWER(name)').all
+		current_user.liquid_templates.with_category(:description).order('LOWER(name)').all
 	end
 
 	def description_params

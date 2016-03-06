@@ -51,6 +51,6 @@ class LiquidTemplatesController < ApplicationController
   end
 
   def liquid_template_params
-    params.require(:liquid_template).permit(:name, :content, :template_type, liquid_template_parameters_attributes: [:id, :name, :_destroy])
+    params.require(:liquid_template).permit(:name, :content, :category, liquid_template_parameters_attributes: [:id, :name, :_destroy])
   end
 end
