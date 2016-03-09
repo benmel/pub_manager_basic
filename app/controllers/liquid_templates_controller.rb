@@ -7,6 +7,10 @@ class LiquidTemplatesController < ApplicationController
 
   def show
     @liquid_template = find_liquid_template
+    respond_to do |format|
+      format.html
+      format.json { render json: @liquid_template, include: :liquid_template_parameters }
+    end
   end
 
   def new

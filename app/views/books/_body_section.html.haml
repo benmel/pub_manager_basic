@@ -1,5 +1,5 @@
 .nested-fields
-	= select_tag 'choose_body_section_liquid_template', options_from_collection_for_select(@body_liquid_templates, 'id', 'name'), prompt: 'Choose a body section liquid template', id: nil, class: 'choose_body_section_liquid_template form-control', data: { url: form_project_book_path, section_type: 'body_section' }
+	= select_tag 'choose_body_section_liquid_template', options_from_collection_for_select(@body_liquid_templates, 'id', 'name'), prompt: 'Choose a body section liquid template', id: nil, class: 'choose_body_section_liquid_template form-control', data: { url: liquid_templates_path }
 	- f.object.build_filled_liquid_template if f.object.filled_liquid_template.nil? # need this to build nested model
 	= render 'body_sections/fields', f: f
 	%br

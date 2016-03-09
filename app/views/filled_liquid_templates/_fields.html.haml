@@ -1,7 +1,7 @@
-= f.input :content, label: 'Template', hint: 'The following parameters are provided: title, subtitle, author and content'
+= f.input :content, label: 'Template', hint: 'The following parameters are provided: title, subtitle, author and content', wrapper_html: { class: 'filled-liquid-template-content' }
 .filled-liquid-template-parameters
 	= f.simple_fields_for :filled_liquid_template_parameters do |filled_liquid_template_parameter|
 		= render 'filled_liquid_template_parameters/fields', f: filled_liquid_template_parameter
 	.links
 		%br	
-		= link_to_add_association 'Add Parameter', f, :filled_liquid_template_parameters, partial: 'filled_liquid_template_parameters/fields', class: 'btn btn-default'
+		= link_to_add_association 'Add Parameter', f, :filled_liquid_template_parameters, partial: 'filled_liquid_template_parameters/fields', class: 'btn btn-default add-filled-liquid-template-parameter'

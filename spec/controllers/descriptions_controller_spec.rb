@@ -204,57 +204,6 @@ RSpec.describe DescriptionsController, type: :controller do
 		end
 	end
 
-	describe 'GET #form' do
-		shared_examples 'common_get_form' do
-			it 'renders the form partial' do
-				expect(response).to render_template(partial: '_form')
-			end
-		end
-
-		context 'description exists' do
-			before(:each) { get :form, project_id: description_with_project.project }
-			
-			it_should_behave_like 'common_get_form'
-
-			it 'assigns @description' do
-				expect(assigns(:description)).to eq(description_with_project)
-			end
-		end
-
-		context 'description does not exist' do
-			context 'includes liquid_template_id param' do
-				before(:each) do
-					@liquid_template = create(:liquid_template, category: :description, user: @user)
-					get :form, project_id: project_without_description, liquid_template_id: @liquid_template
-				end
-
-				it_should_behave_like 'common_get_form'
-
-				it 'assigns a new @description' do
-					expect(assigns(:description)).to be_a_new(Description)
-				end
-
-				it 'builds a filled_liquid_template' do
-					expect(assigns(:description).filled_liquid_template).to_not be_nil
-				end
-
-				it 'sets the description template and description parameters' do
-					expect(assigns(:description).filled_liquid_template.content).to eq(@liquid_template.content)
-				end	
-			end
-
-			context 'does not include liquid_template_id param' do
-				before(:each) { get :form, project_id: project_without_description }
-
-				it_should_behave_like 'common_get_form'
-
-				it 'assigns a new @description' do
-					expect(assigns(:description)).to be_a_new(Description)
-				end
-			end
-		end
-	end
-
 	describe 'different user' do
 		it 'raises an error' do
 			sign_in create(:user)
