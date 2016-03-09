@@ -1,27 +1,33 @@
 .row
-	.col-md-2
-		%b= label(:filled_liquid_template, :content)
-	.col-md-10	
-		= @description.filled_liquid_template.content if @description.filled_liquid_template
+	.col-md-12
+		%h3 Kindle
 .row
-	.col-md-2
-		%b= label(:filled_liquid_template, :filled_liquid_template_parameters, 'Parameters')
-	.col-md-10
-		= @description.filled_liquid_template.filled_liquid_template_parameters.map(&:name).join(', ') if @description.filled_liquid_template		
+	.col-md-6
+		%h4 HTML
+		= @kindle
+	.col-md-6
+		%h4 Output
+		= sanitize @kindle
 .row
-	.col-md-2
-		%b= label(:description, :content)
-	.col-md-10	
-		= @description.content
+	.col-md-12
+		%h3 Createspace
 .row
-	.col-md-2
-		%b= label(:description, :chapter_list)
-	.col-md-10	
-		= @description.chapter_list
+	.col-md-6
+		%h4 HTML
+		= @createspace
+	.col-md-6
+		%h4 Output
+		= sanitize @createspace
 .row
-	.col-md-2
-		%b= label(:description, :excerpt)
-	.col-md-10	
-		= @description.excerpt			
+	.col-md-12
+		%h3 ACX
+.row
+	.col-md-6
+		%h4 HTML
+		= @acx
+	.col-md-6
+		%h4 Output
+		= sanitize @acx
 = link_to 'Edit', edit_project_description_path(@project), class: 'btn btn-default'
-= link_to 'Back', project_path(@project), class: 'btn btn-default'
+= link_to 'Back', project_path(@project), class: 'btn btn-default'		
+		

@@ -23,6 +23,18 @@ RSpec.describe DescriptionsController, type: :controller do
 				expect(assigns(:description)).to eq(description_with_project)
 			end
 
+			it 'assigns @kindle' do
+				expect(assigns(:kindle)).to_not be_nil
+			end
+
+			it 'assigns @createspace' do
+				expect(assigns(:createspace)).to_not be_nil
+			end
+
+			it 'assigns @acx' do
+				expect(assigns(:acx)).to_not be_nil
+			end
+
 			it 'renders the #show template' do
 				expect(response).to render_template(:show)
 			end
@@ -30,9 +42,7 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		context 'description does not exist' do
 			it 'raises an error' do
-				expect { 
-					get :show, project_id: project_without_description 
-				}.to raise_error(ActiveRecord::RecordNotFound) 
+				expect { get :show, project_id: project_without_description }.to raise_error(ActiveRecord::RecordNotFound) 
 			end
 		end
 	end
@@ -165,42 +175,6 @@ RSpec.describe DescriptionsController, type: :controller do
 
 		it 'redirects to #show for the project' do
 			expect(response).to redirect_to(description_with_project.project)
-		end
-	end
-
-	describe 'GET #preview' do
-		context 'description exists' do
-			before(:each) { get :preview, project_id: description_with_project.project }
-			
-			it 'assigns @project' do
-				expect(assigns(:project)).to eq(description_with_project.project)
-			end
-
-			it 'assigns @description' do
-				expect(assigns(:description)).to eq(description_with_project)
-			end
-
-			it 'assigns @kindle' do
-				expect(assigns(:kindle)).to_not be_nil
-			end
-
-			it 'assigns @createspace' do
-				expect(assigns(:createspace)).to_not be_nil
-			end
-
-			it 'assigns @acx' do
-				expect(assigns(:acx)).to_not be_nil
-			end
-
-			it 'renders the #preview template' do
-				expect(response).to render_template(:preview)
-			end
-		end
-
-		context 'description does not exist' do
-			it 'raises an error' do
-				expect { get :preview, project_id: project_without_description }.to raise_error(ActiveRecord::RecordNotFound) 
-			end
 		end
 	end
 

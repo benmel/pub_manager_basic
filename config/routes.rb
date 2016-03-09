@@ -61,9 +61,7 @@ Rails.application.routes.draw do
   resources :projects do
     resource :book, only: [:new, :create]
     resource :cover
-    resource :description do
-      get :preview, on: :member
-    end
+    resource :description
   end
 
   resources :books, only: [:index, :show, :destroy] do
