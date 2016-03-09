@@ -1,7 +1,0 @@
-= simple_fields_for @book do |f|
-	= f.simple_fields_for :body_sections, child_index: (Time.current.to_f * 1000).to_i do |body_section|
-		.nested-fields
-			= select_tag 'choose_body_section_liquid_template', options_from_collection_for_select(@body_liquid_templates, 'id', 'name', @liquid_template.id), prompt: 'Choose a body section liquid template', id: nil, class: 'choose_body_section_liquid_template form-control', data: { url: form_project_book_path, section_type: 'body_section' }
-			= render 'body_sections/fields', f: body_section
-			%br
-			= link_to_remove_association "Remove Section", f, class: 'btn btn-default'

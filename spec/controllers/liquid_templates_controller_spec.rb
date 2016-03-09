@@ -26,14 +26,23 @@ RSpec.describe LiquidTemplatesController, type: :controller do
   end
 
   describe "GET #show" do
-    before(:each) { get :show, id: liquid_template }
-
     it 'assigns @liquid_template' do
+      get :show, id: liquid_template
       expect(assigns(:liquid_template)).to eq(liquid_template)
     end
 
-    it 'renders the #show template' do
-      expect(response).to render_template(:show)
+    context 'html format' do
+      it 'renders the #show template' do
+        get :show, id: liquid_template
+        expect(response).to render_template(:show)
+      end
+    end
+
+    context 'json format' do
+      it 'renders a json response' do
+        get :show, id: liquid_template, format: :json
+        expect(response.body).to eq(liquid_template.to_json(include: :liquid_template_parameters))
+      end
     end
   end
 

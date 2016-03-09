@@ -1,5 +1,4 @@
 = simple_form_for @description, url: project_description_path  do |f|
-	= f.full_error :base
 	#description-filled-liquid-template
 		= f.simple_fields_for :filled_liquid_template do |filled_liquid_template|
 			= render 'filled_liquid_templates/fields', f: filled_liquid_template

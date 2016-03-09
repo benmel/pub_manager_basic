@@ -18,4 +18,5 @@
 //= require jquery.ui.touch-punch.min
 //= require tinymce
 //= require cocoon
+//= require filled_liquid_templates
 //= require_tree .

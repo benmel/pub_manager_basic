@@ -59,13 +59,10 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   resources :projects do
-    resource :book, only: [:new, :create] do
-      get :form, on: :member
-    end
+    resource :book, only: [:new, :create]
     resource :cover
     resource :description do
       get :preview, on: :member
-      get :form, on: :member
     end
   end
 
