@@ -5,6 +5,9 @@ class DescriptionsController < ApplicationController
 		@project = find_project
 		@description = @project.description
 		raise ActiveRecord::RecordNotFound unless @description
+		@kindle = @description.kindle
+		@createspace = @description.createspace
+		@acx = @description.acx
 	end
 
 	def new
@@ -49,15 +52,6 @@ class DescriptionsController < ApplicationController
 		@project = find_project
 		@project.description.destroy
 		redirect_to @project
-	end
-
-	def preview
-		@project = find_project
-		@description = @project.description
-		raise ActiveRecord::RecordNotFound unless @description
-		@kindle = @description.kindle
-		@createspace = @description.createspace
-		@acx = @description.acx
 	end
 
 	private
