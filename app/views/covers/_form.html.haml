@@ -1,4 +1,7 @@
 = simple_form_for @cover, url: project_cover_path do |f|
 	= f.input :photographer, as: :string
 	= f.input :license, as: :string
-	= f.button :submit
+	.well
+		.row.text-center
+			= f.button :submit, class: 'btn-primary btn-well'
+			= yield

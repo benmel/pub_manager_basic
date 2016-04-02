@@ -1,0 +1,13 @@
+.filled-liquid-template-parameter-name, .filled-liquid-template-parameter-value, .remove-filled-liquid-template-parameter {
+	vertical-align: top !important;
+}
+
+.filled-liquid-template-parameter-input {
+	margin: auto 5px;
+}
+
+@media (min-width: $screen-lg-min) {
+	.filled-liquid-template-parameter-input {
+		width: 240px !important;
+	}
+}

@@ -5,4 +5,7 @@
 	= f.input :keywords, as: :string
 	= f.input :isbn10, as: :string
 	= f.input :isbn13, as: :string
-	= f.button :submit			
+	.well
+		.row.text-center
+			= f.button :submit, class: 'btn-primary btn-well'
+			= yield		

@@ -1,3 +1,2 @@
-= render 'form'
-%br		
-= link_to 'Back', book_path(@book), class: 'btn btn-default'
+= render layout: 'form' do	
+	= link_to 'Back', @book, class: 'btn btn-default btn-well'

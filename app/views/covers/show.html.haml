@@ -8,5 +8,5 @@
 		%b= label(:cover, :license)
 	.col-md-10
 		= @cover.license
-= link_to 'Edit', edit_project_cover_path(@project), class: 'btn btn-default'
-= link_to 'Back', project_path(@project), class: 'btn btn-default'
+= link_to 'Edit', edit_project_cover_path, class: 'btn btn-default btn-show'
+= link_to 'Back', @project, class: 'btn btn-default btn-show'

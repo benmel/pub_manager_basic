@@ -1,30 +1,29 @@
 .row
 	.col-md-4
-		= label(:book, :front_section)
-	.col-md-8
-		- if @book.front_section
-			= link_to('Edit', edit_book_front_section_path(@book))
-		- else
-			= link_to('Create', new_book_front_section_path(@book))
-.row	
-	.col-md-4
-		= label(:book, :toc_section)
-	.col-md-8
-		- if @book.toc_section
-			= link_to('Edit', edit_book_toc_section_path(@book))
-		- else
-			= link_to('Create', new_book_toc_section_path(@book))
-#sortable
-	- @book.body_sections.rank(:row_order).each do |body_section|
-		.row{ data: { url: book_body_section_path(@book, body_section) } }
-			.col-md-4
-				%span.glyphicon.glyphicon-menu-hamburger{ 'aria-hidden': 'true' } 
-				= label(:body_section, :name, body_section.name)
-			.col-md-8
-				= link_to('Edit', edit_book_body_section_path(@book, body_section))
-.row
-	.col-md-12
-		= link_to('Add Body Section', new_book_body_section_path(@book))	
+		.row
+			.col-md-12
+				= label(:book, :front_section)
+				- if @book.front_section
+					= link_to('Edit', edit_book_front_section_path(@book), class: 'pull-right')
+				- else
+					= link_to('Create', new_book_front_section_path(@book), class: 'pull-right')
+		.row	
+			.col-md-12
+				= label(:book, :toc_section)
+				- if @book.toc_section
+					= link_to('Edit', edit_book_toc_section_path(@book), class: 'pull-right')
+				- else
+					= link_to('Create', new_book_toc_section_path(@book), class: 'pull-right')		
+		#sortable
+			- @book.body_sections.rank(:row_order).each do |body_section|
+				.row{ data: { url: book_body_section_path(@book, body_section) } }
+					.col-md-12
+						%span.glyphicon.glyphicon-menu-hamburger{ 'aria-hidden': 'true' } 
+						= label(:body_section, :name, body_section.name)
+						= link_to('Edit', edit_book_body_section_path(@book, body_section), class: 'pull-right')
+		.row
+			.col-md-12
+				= link_to('Add Body Section', new_book_body_section_path(@book))	
 		
-= link_to 'Project', project_path(@book.project), class: 'btn btn-default' if @book.project
-= link_to 'Delete', book_path(@book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+= link_to 'Project', @book.project, class: 'btn btn-default btn-show' if @book.project
+= link_to 'Delete', @book, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-show'

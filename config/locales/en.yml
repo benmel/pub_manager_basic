@@ -20,7 +20,24 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      liquid_template: "Template"
+      front_section: "Front Section"
+      toc_section: "TOC Section"
+      body_section: "Body Section"
+    attributes:
+      book:
+        front_section: "Front Section"
+        toc_section: "TOC Section" 
+        body_sections: "Body Sections"
+      description:
+        chapter_list: "Chapter List"
+      liquid_template:
+        liquid_template_parameters: "Parameters"    
+      project:
+        isbn10: "ISBN-10"
+        isbn13: "ISBN-13"  
   enumerize:
     liquid_template:
       category:

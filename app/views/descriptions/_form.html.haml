@@ -1,9 +1,11 @@
 = simple_form_for @description, url: project_description_path  do |f|
-	#description-filled-liquid-template
-		= f.simple_fields_for :filled_liquid_template do |filled_liquid_template|
-			= render 'filled_liquid_templates/fields', f: filled_liquid_template
-	%p.help-block Additional parameters are provided: chapters (an array), excerpt and marketplace (kindle, createspace or acx)
 	= f.input :content, input_html: { rows: 10 }
 	= f.input :chapter_list, as: :string, hint: 'List of chapters separated by a semicolon'
 	= f.input :excerpt, input_html: { rows: 10 }
-	= f.button :submit				
+	#description-filled-liquid-template
+		= f.simple_fields_for :filled_liquid_template do |filled_liquid_template|
+			= render 'filled_liquid_templates/fields', f: filled_liquid_template, locals: { extra_hint: 'chapters (an array), excerpt, marketplace (kindle, createspace or acx)' }
+	.well
+		.row.text-center
+			= f.button :submit, class: 'btn-primary btn-well'
+			= yield				

@@ -1,20 +1,33 @@
 = simple_form_for @book, url: project_book_path do |f|
-	%h4 Front Section
-	= select_tag 'choose_front_section_liquid_template', options_from_collection_for_select(@front_liquid_templates, 'id', 'name'), prompt: 'Choose a front section liquid template', class: 'form-control', data: { url: liquid_templates_path }
-	#front-section
-		= f.simple_fields_for :front_section do |front_section|
-			= render 'front_sections/fields', f: front_section
-	%h4 Table of Contents Section
-	= select_tag 'choose_toc_section_liquid_template', options_from_collection_for_select(@toc_liquid_templates, 'id', 'name'), prompt: 'Choose a TOC section liquid template', class: 'form-control', data: { url: liquid_templates_path }
-	#toc-section
-		= f.simple_fields_for :toc_section do |toc_section|
-			= render 'toc_sections/fields', f: toc_section
-	%h4 Body Sections
-	#body-sections
-		= f.simple_fields_for :body_sections do |body_section|
-			= render 'body_section', f: body_section
-		.links
-			%br	
-			= link_to_add_association 'Add Body Section', f, :body_sections, partial: 'body_section', class: 'btn btn-default'
-		%br
-	= f.button :submit
+	.panel.panel-default
+		.panel-heading
+			%h3.panel-title Front Section
+		.panel-body
+			= select_tag 'choose_front_section_liquid_template', options_from_collection_for_select(@front_liquid_templates, 'id', 'name'), prompt: 'Choose a front section liquid template', class: 'form-control', data: { url: liquid_templates_path }
+			#front-section
+				= f.simple_fields_for :front_section do |front_section|
+					= render 'front_sections/fields', f: front_section
+	
+	.panel.panel-default
+		.panel-heading
+			%h3.panel-title Table of Contents Section
+		.panel-body
+			= select_tag 'choose_toc_section_liquid_template', options_from_collection_for_select(@toc_liquid_templates, 'id', 'name'), prompt: 'Choose a TOC section liquid template', class: 'form-control', data: { url: liquid_templates_path }
+			#toc-section
+				= f.simple_fields_for :toc_section do |toc_section|
+					= render 'toc_sections/fields', f: toc_section
+	
+	.panel.panel-default
+		.panel-heading
+			%h3.panel-title Body Sections
+		.panel-body
+			#body-sections
+				= f.simple_fields_for :body_sections do |body_section|
+					= render 'body_section', f: body_section
+				.links
+					= link_to_add_association 'Add Body Section', f, :body_sections, partial: 'body_section', class: 'btn btn-success center-block'
+	
+	.well
+		.row.text-center
+			= f.button :submit, class: 'btn-primary btn-well'
+			= yield
