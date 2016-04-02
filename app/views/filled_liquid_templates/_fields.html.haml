@@ -1,7 +1,11 @@
-= f.input :content, label: 'Template', hint: 'The following parameters are provided: title, subtitle, author and content', wrapper_html: { class: 'filled-liquid-template-content' }
-.filled-liquid-template-parameters
-	= f.simple_fields_for :filled_liquid_template_parameters do |filled_liquid_template_parameter|
-		= render 'filled_liquid_template_parameters/fields', f: filled_liquid_template_parameter
-	.links
-		%br	
-		= link_to_add_association 'Add Parameter', f, :filled_liquid_template_parameters, partial: 'filled_liquid_template_parameters/fields', class: 'btn btn-default add-filled-liquid-template-parameter'
+= f.input :content, label: 'Template', hint: "The following parameters are provided: title, subtitle, author, content#{', ' + locals[:extra_hint] if locals[:extra_hint]}", wrapper_html: { class: 'filled-liquid-template-content' }, input_html: { rows: 10 }
+.filled-liquid-template-parameters.panel.panel-default
+	.panel-heading
+		%h3.panel-title Parameters
+	.panel-body
+		.row
+			.col-md-8.col-md-offset-2 
+				= f.simple_fields_for :filled_liquid_template_parameters do |filled_liquid_template_parameter|
+					= render 'filled_liquid_template_parameters/fields', f: filled_liquid_template_parameter
+				.links
+					= link_to_add_association 'Add Parameter', f, :filled_liquid_template_parameters, partial: 'filled_liquid_template_parameters/fields', class: 'btn btn-success add-filled-liquid-template-parameter center-block'

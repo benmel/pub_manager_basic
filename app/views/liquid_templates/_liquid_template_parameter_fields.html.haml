@@ -1,3 +1,3 @@
-.nested-fields
-	= f.input :name, required: false, label: 'Parameter Name', as: :string
-	= link_to_remove_association "Remove Parameter", f, class: 'btn btn-default'	
+.nested-fields.form-inline
+	= f.input :name, required: false, as: :string, input_html: { class: 'liquid-template-parameter-input' }, wrapper_html: { class: 'liquid-template-parameter-name' }
+	= link_to_remove_association 'Remove', f, class: 'btn btn-danger remove-liquid-template-parameter'	

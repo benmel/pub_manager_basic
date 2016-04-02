@@ -15,3 +15,29 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "jquery-ui/sortable";
+
+@import "books";
+@import "liquid_templates";
+@import "filled_liquid_templates";
+
+.btn.center-block {
+	width: 200px;
+}
+
+.btn.btn-well {
+	margin: 3px 5px;
+	width: 200px;
+}
+
+.btn.btn-show {
+	margin: 10px 5px 20px auto;
+	width: 100px;
+}
+
+.btn.btn-index {
+	margin: 10px auto;
+	width: 150px;
+}
+.nested-fields.form-inline {
+	margin: 10px auto;
+}

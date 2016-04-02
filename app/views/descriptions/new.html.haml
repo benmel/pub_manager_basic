@@ -1,4 +1,3 @@
 = select_tag 'choose_liquid_template', options_from_collection_for_select(@liquid_templates, 'id', 'name'), prompt: 'Choose a description liquid template', class: 'form-control', data: { url: liquid_templates_path }
-= render 'form'
-%br		
-= link_to 'Back', project_path(@project), class: 'btn btn-default'
+= render layout: 'form' do
+	= link_to 'Back', @project, class: 'btn btn-default btn-well'

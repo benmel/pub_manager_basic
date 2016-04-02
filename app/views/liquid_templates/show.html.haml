@@ -17,6 +17,7 @@
 	.col-md-2
 		%b= label(:liquid_template, :liquid_template_parameters)
 	.col-md-10
-		= @liquid_template.liquid_template_parameters.map(&:name).join(', ')			
-= link_to 'Edit', edit_liquid_template_path(@liquid_template), class: 'btn btn-default'
-= link_to 'Back', liquid_templates_path, class: 'btn btn-default'
+		= @liquid_template.liquid_template_parameters.map(&:name).join(', ')
+			
+= link_to 'Edit', edit_liquid_template_path, class: 'btn btn-default btn-show'
+= link_to 'Back', liquid_templates_path, class: 'btn btn-default btn-show'

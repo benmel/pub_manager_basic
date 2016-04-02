@@ -29,10 +29,10 @@ class FilledLiquidTemplates
     $filledLiquidTemplate.children('.filled-liquid-template-parameters')
 
   @parametersNestedFields: ($filledLiquidTemplate) ->
-    @parameters($filledLiquidTemplate).children('.nested-fields')
+    @parameters($filledLiquidTemplate).find('.nested-fields')
 
   @parametersAddButton: ($filledLiquidTemplate) ->
-    @parameters($filledLiquidTemplate).children('.links').children('.add-filled-liquid-template-parameter')
+    @parameters($filledLiquidTemplate).find('.links').children('.add-filled-liquid-template-parameter')
 
   @parametersLastName: ($filledLiquidTemplate) ->
     @parametersNestedFields($filledLiquidTemplate).last().children('.filled-liquid-template-parameter-name').children('input')

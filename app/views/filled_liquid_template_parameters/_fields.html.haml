@@ -1,4 +1,4 @@
-.nested-fields
-	= f.input :name, label: 'Parameter Name', as: :string, wrapper_html: { class: 'filled-liquid-template-parameter-name' }
-	= f.input :value, label: 'Parameter Value', as: :string, wrapper_html: { class: 'filled-liquid-template-parameter-value' }
-	= link_to_remove_association "Remove Parameter", f, class: 'btn btn-default'
+.nested-fields.form-inline
+	= f.input :name, as: :string, input_html: { class: 'filled-liquid-template-parameter-input' }, wrapper_html: { class: 'filled-liquid-template-parameter-name' }
+	= f.input :value, as: :string, input_html: { class: 'filled-liquid-template-parameter-input' }, wrapper_html: { class: 'filled-liquid-template-parameter-value' }
+	= link_to_remove_association 'Remove', f, class: 'btn btn-danger remove-filled-liquid-template-parameter'

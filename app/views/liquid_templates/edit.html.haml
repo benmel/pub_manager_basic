@@ -1,4 +1,3 @@
-= render 'form'
-%br
-= link_to 'Delete', liquid_template_path(@liquid_template), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
-= link_to 'Back', liquid_template_path(@liquid_template), class: 'btn btn-default'
+= render layout: 'form' do
+	= link_to 'Delete', @liquid_template, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-well'
+	= link_to 'Back', @liquid_template, class: 'btn btn-default btn-well'

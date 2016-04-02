@@ -1,4 +1,4 @@
-= f.input :content
+= f.input :content, input_html: { rows: 10 }
 #toc-section-filled-liquid-template
 	= f.simple_fields_for :filled_liquid_template do |filled_liquid_template|
-		= render 'filled_liquid_templates/fields', f: filled_liquid_template
+		= render 'filled_liquid_templates/fields', f: filled_liquid_template, locals: {}

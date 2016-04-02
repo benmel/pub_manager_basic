@@ -1,0 +1,19 @@
+.liquid-template-parameter-name, .remove-liquid-template-parameter {
+	vertical-align: top !important;
+}
+
+.liquid-template-parameter-input {
+	margin: auto 5px;
+}
+
+@media (min-width: $screen-sm-min) {
+	.liquid-template-parameter-input {
+		width: 300px !important;
+	}
+}
+
+@media (min-width: $screen-lg-min) {
+	.liquid-template-parameter-input {
+		width: 380px !important;
+	}
+}

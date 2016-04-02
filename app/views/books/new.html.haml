@@ -1,3 +1,2 @@
-= render 'form'
-%br	
-= link_to 'Back', project_path(@project), class: 'btn btn-default'
+= render layout: 'form' do
+	= link_to 'Back', @project, class: 'btn btn-default btn-well'

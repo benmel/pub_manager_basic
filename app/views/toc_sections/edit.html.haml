@@ -1,4 +1,3 @@
-= render 'form'
-%br
-= link_to 'Delete', book_toc_section_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
-= link_to 'Back', book_path(@book), class: 'btn btn-default'
+= render layout: 'form' do
+	= link_to 'Delete', book_toc_section_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-well'
+	= link_to 'Back', @book, class: 'btn btn-default btn-well'

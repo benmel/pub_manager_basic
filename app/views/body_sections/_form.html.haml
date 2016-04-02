@@ -1,4 +1,6 @@
 = simple_form_for [@book, @body_section] do |f|
 	= render 'fields', f: f
-	%br
-	= f.button :submit	
+	.well
+		.row.text-center
+			= f.button :submit, class: 'btn-primary btn-well'
+			= yield
