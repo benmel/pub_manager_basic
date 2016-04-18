@@ -16,6 +16,7 @@ class Description < ActiveRecord::Base
   	parsed_liquid_template.render(parameters_hash Marketplace::ACX)
   end
 
+  # TODO: move this to filled_liquid_template
   def parsed_liquid_template
     @parsed_liquid_template ||= self.filled_liquid_template.parsed_liquid_template
   end
@@ -43,9 +44,5 @@ class Description < ActiveRecord::Base
 
   def filled_liquid_template_parameters_hash
     @filled_liquid_template_parameters_hash ||= self.filled_liquid_template.filled_liquid_template_parameters_hash
-  end
-
-  def set_filled_liquid_template_from(liquid_template)
-    self.filled_liquid_template.set_from(liquid_template)
   end
 end

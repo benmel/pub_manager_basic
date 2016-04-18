@@ -5,13 +5,6 @@ class FilledLiquidTemplate < ActiveRecord::Base
 	validates :content, presence: true
 	validate :syntax_errors
 
-	def set_from(liquid_template)
-		self.content = liquid_template.content
-		liquid_template.liquid_template_parameters.each do |liquid_template_parameter|
-			self.filled_liquid_template_parameters.build(name: liquid_template_parameter.name)
-		end
-	end
-
 	def parsed_liquid_template
 		@parsed_liquid_template ||= Liquid::Template.parse(sanitized_content)
 	end

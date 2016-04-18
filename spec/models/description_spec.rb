@@ -91,21 +91,4 @@ RSpec.describe Description, type: :model do
       expect(description_with_parameters.filled_liquid_template_parameters_hash).to eq(description_with_parameters.filled_liquid_template.filled_liquid_template_parameters.pluck(:name, :value).to_h)
     end
   end
-
-  describe 'set_filled_liquid_template_from(liquid_template)' do
-    let(:liquid_template) { build(:liquid_template) }
-
-    it 'sets the filled_liquid_template content' do
-      description.build_filled_liquid_template
-      description.set_filled_liquid_template_from(liquid_template)
-      expect(description.filled_liquid_template.content).to eq(liquid_template.content)
-    end
-
-    it 'sets the filled_liquid_template filled_liquid_template_parameters' do
-      liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
-      description.build_filled_liquid_template
-      description.set_filled_liquid_template_from(liquid_template)
-      expect(description.filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
-    end
-  end
 end

@@ -28,16 +28,4 @@ class Book < ActiveRecord::Base
 		body_section = self.body_sections.build
 		body_section.build_filled_liquid_template
 	end
-
-	def set_front_section_from(liquid_template)
-		self.front_section.filled_liquid_template.set_from liquid_template
-	end
-
-	def set_toc_section_from(liquid_template)
-		self.toc_section.filled_liquid_template.set_from liquid_template
-	end
-
-	def set_last_body_section_from(liquid_template)
-		self.body_sections.last.filled_liquid_template.set_from liquid_template
-	end
 end

@@ -36,22 +36,6 @@ RSpec.describe FilledLiquidTemplate, type: :model do
     end
   end
 
-	describe 'set_from(liquid_template)' do
-		let(:liquid_template) { build(:liquid_template) }
-		let(:filled_liquid_template) { create(:filled_liquid_template) }
-
-		it 'should set the content' do
-			filled_liquid_template.set_from(liquid_template)
-			expect(filled_liquid_template.content).to eq(liquid_template.content)
-		end
-
-		it 'should set the filled_liquid_template_parameters' do
-			liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
-			filled_liquid_template.set_from(liquid_template)
-			expect(filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
-		end
-	end
-
 	describe 'parsed_liquid_template' do
 		it 'returns a Liquid template' do
 			expect(filled_liquid_template.parsed_liquid_template).to be_a(Liquid::Template)
