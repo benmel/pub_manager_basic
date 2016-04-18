@@ -36,6 +36,15 @@ RSpec.describe FilledLiquidTemplate, type: :model do
     end
   end
 
+  describe 'rendered_liquid_template(parameters_hash)' do
+    it 'merges parameters_hash and filled_liquid_template_parameters and renders the template' do
+      template = FilledLiquidTemplate.create(content: '{{ content }} It is illustrated by {{ illustrator }}.')
+      template.filled_liquid_template_parameters.create(name: 'illustrator', value: 'John Smith')
+      parameters_hash = { 'content' => 'This is the content.' }
+      expect(template.rendered_liquid_template parameters_hash).to eq('This is the content. It is illustrated by John Smith.')
+    end
+  end
+
 	describe 'parsed_liquid_template' do
 		it 'returns a Liquid template' do
 			expect(filled_liquid_template.parsed_liquid_template).to be_a(Liquid::Template)

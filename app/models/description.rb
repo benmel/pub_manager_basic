@@ -5,24 +5,19 @@ class Description < ActiveRecord::Base
   validates :content, presence: true
 
   def kindle
-    parsed_liquid_template.render(parameters_hash Marketplace::KINDLE)
+    self.filled_liquid_template.rendered_liquid_template(parameters_hash Marketplace::KINDLE)
   end
 
   def createspace
-  	parsed_liquid_template.render(parameters_hash Marketplace::CREATESPACE)
+    self.filled_liquid_template.rendered_liquid_template(parameters_hash Marketplace::CREATESPACE)
   end
 
   def acx
-  	parsed_liquid_template.render(parameters_hash Marketplace::ACX)
-  end
-
-  # TODO: move this to filled_liquid_template
-  def parsed_liquid_template
-    @parsed_liquid_template ||= self.filled_liquid_template.parsed_liquid_template
+    self.filled_liquid_template.rendered_liquid_template(parameters_hash Marketplace::ACX)
   end
 
   def parameters_hash(marketplace)
-  	[marketplace_hash(marketplace), project_hash, description_hash, chapters_hash, filled_liquid_template_parameters_hash].inject(:merge)
+    [marketplace_hash(marketplace), project_hash, description_hash, chapters_hash].inject(:merge)
   end
 
   def marketplace_hash(marketplace)
@@ -40,9 +35,5 @@ class Description < ActiveRecord::Base
 
   def chapters_hash
   	@chapters_hash ||= { 'chapters' => self.chapter_list.split(';') }
-  end
-
-  def filled_liquid_template_parameters_hash
-    @filled_liquid_template_parameters_hash ||= self.filled_liquid_template.filled_liquid_template_parameters_hash
   end
 end

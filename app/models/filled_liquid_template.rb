@@ -5,8 +5,13 @@ class FilledLiquidTemplate < ActiveRecord::Base
 	validates :content, presence: true
 	validate :syntax_errors
 
+  def rendered_liquid_template(parameters_hash)
+    parameters_hash.merge! filled_liquid_template_parameters_hash
+    parsed_liquid_template.render parameters_hash
+  end
+
 	def parsed_liquid_template
-		@parsed_liquid_template ||= Liquid::Template.parse(sanitized_content)
+		@parsed_liquid_template ||= Liquid::Template.parse sanitized_content
 	end
 
 	def filled_liquid_template_parameters_hash
