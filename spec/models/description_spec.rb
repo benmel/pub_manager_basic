@@ -41,18 +41,11 @@ RSpec.describe Description, type: :model do
     end
   end
 
-  describe 'parsed_liquid_template' do
-    it 'returns a Liquid template' do
-      expect(description_with_valid_template.parsed_liquid_template).to be_a(Liquid::Template)
-    end
-  end
-
   describe 'parameters_hash(marketplace)' do
     before do
       allow(description).to receive(:project_hash).and_return({})
       allow(description).to receive(:description_hash).and_return({})
       allow(description).to receive(:chapters_hash).and_return({})
-      allow(description).to receive(:filled_liquid_template_parameters_hash).and_return({})
     end
 
     it 'creates a hash with the marketplace' do
@@ -69,8 +62,9 @@ RSpec.describe Description, type: :model do
   describe 'project_hash' do
     let(:project) { build(:project) }
     let(:description) { build(:description, project: project) }
-    it 'creates a hash using the project attributes' do
-      expect(description.project_hash).to eq({ 'title' => project.title, 'subtitle' => project.subtitle, 'author' => project.author })
+    
+    it 'returns a hash' do
+      expect(description.project_hash).to be_a(Hash)
     end
   end
 
@@ -83,29 +77,6 @@ RSpec.describe Description, type: :model do
   describe 'chapters_hash' do
     it 'creates a hash using the chapter list' do
       expect(description.chapters_hash).to eq({ 'chapters' => description.chapter_list.split(';') })
-    end
-  end
-
-  describe 'filled_liquid_template_parameters_hash' do
-    it 'creates a hash using the filled_liquid_template_parameters' do
-      expect(description_with_parameters.filled_liquid_template_parameters_hash).to eq(description_with_parameters.filled_liquid_template.filled_liquid_template_parameters.pluck(:name, :value).to_h)
-    end
-  end
-
-  describe 'set_filled_liquid_template_from(liquid_template)' do
-    let(:liquid_template) { build(:liquid_template) }
-
-    it 'sets the filled_liquid_template content' do
-      description.build_filled_liquid_template
-      description.set_filled_liquid_template_from(liquid_template)
-      expect(description.filled_liquid_template.content).to eq(liquid_template.content)
-    end
-
-    it 'sets the filled_liquid_template filled_liquid_template_parameters' do
-      liquid_template_parameter = create(:liquid_template_parameter, liquid_template: liquid_template)
-      description.build_filled_liquid_template
-      description.set_filled_liquid_template_from(liquid_template)
-      expect(description.filled_liquid_template.filled_liquid_template_parameters.first.name).to eq(liquid_template_parameter.name)
     end
   end
 end
