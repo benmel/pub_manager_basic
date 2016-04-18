@@ -5,4 +5,8 @@ class Project < ActiveRecord::Base
 	has_one :description, inverse_of: :project, dependent: :destroy
 	validates :title, presence: true
 	validates :author, presence: true
+
+  def project_hash
+    @project_hash ||= self.attributes.slice('title', 'subtitle', 'author')
+  end
 end

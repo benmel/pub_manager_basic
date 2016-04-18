@@ -24,9 +24,8 @@ class Description < ActiveRecord::Base
     { 'marketplace' => marketplace }
   end
 
-  # TODO: move this to project model
   def project_hash
-  	@project_hash ||= self.project.attributes.slice('title', 'subtitle', 'author')
+    @project_hash ||= self.project.project_hash
   end
   	
   def description_hash	
